@@ -1,0 +1,146 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pf_unsigned.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/17 06:29:28 by gcc               #+#    #+#             */
+/*   Updated: 2020/12/17 16:53:35 by gcc              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+
+static void print(t_prntf *p, const char * num, int len)
+{
+	if (p->flags & ZERO && (p->preciz = p->width))
+		p->width = 0;
+	while (p->width > 0)
+	{
+		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
+		p->width -= 10;
+	}
+	if (p->flags & POINTER)
+	{
+		(p->flags & PLUS) ? buffer("+", 1, 0) : 0;
+		(p->flags & SPACE) ? buffer(" ", 1 , 0) : 0;
+	}
+	if (p->flags & HASH)
+	{
+		if (p->flags & UPPER)
+			buffer("0X", 2, 0);
+		else
+			buffer("0x", 2, 0);
+	}
+	while (p->preciz > 0)
+	{
+		buffer("0000000000", (p->preciz > 10) ? 10 : p->preciz, 0);
+		p->preciz -= 10;
+	}
+	buffer(num, len, 0);
+}
+
+static void print_minus(t_prntf *p, const char *num, int len)
+{
+
+	if (p->flags & HASH)
+	{
+		if (p->flags & UPPER)
+			buffer("0X", 2, 0);
+		else
+			buffer("0x", 2, 0);
+	}
+	while (p->preciz > 0)
+	{
+		buffer("0000000000", (p->preciz > 10) ? 10 : p->preciz, 0);
+		p->preciz -= 10;
+	}
+	buffer(num, len, 0);
+	while (p->width > 0)
+	{
+		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
+		p->width -= 10;
+	}
+}	
+
+static void itoa_base(t_prntf *p, unsigned long long n, int base)
+{
+	int i;
+	int len;
+	char * const	hex = (p->flags & UPPER) ? HEX_U : HEX_L;
+	char tmp[21];
+
+	i = 21;
+	if (!n)
+		tmp[--i] = '0';
+	while (n)
+	{
+		tmp[--i] = hex[n % base];
+		n /= base;
+	}
+	len = 21 - i;
+	if (p->flags & PRECIZ)
+	{
+		p->preciz -= len;
+		if (p->preciz > 0)
+			p->width -= p->preciz;
+	}
+	p->width -= len;
+	if (p->flags & MINUS)
+		print_minus(p, tmp + i, len);
+	else
+		print(p, tmp + i, len);
+}
+
+void	pf_adresse(t_prntf *p)
+{
+	void * ptr;
+	ptr = va_arg(p->ap, void *);
+	p->flags |= HASH;
+	p->flags |= POINTER;
+	if (p->flags & PRECIZ)
+		p->flags &= ~ZERO;
+	if (p->flags & PLUS)
+	{
+		--p->width;
+		if (p->flags & MINUS)
+			buffer("+", 1, 0);
+	}
+	else if (p->flags & SPACE)
+	{
+		--p->width;
+		if (p->flags & MINUS)
+			buffer(" ", 1, 0);
+	}
+	p->width -= 2;
+	itoa_base(p, (unsigned long long)ptr, 16);
+}
+
+void    pf_unsigned(t_prntf *p, char c)
+{
+	unsigned long long n;
+
+	if (c == 'X')
+		p->flags |= UPPER;
+	if (p->flags & PRECIZ)
+		p->flags &= ~ZERO;
+	if (p->flags & CHAR)
+		n = (unsigned long long)((unsigned char)va_arg(p->ap, int));
+	else if (p->flags & SHORT)
+		n = (unsigned long long)((unsigned short)va_arg(p->ap, int));
+	else if (p->flags & LONG)
+		n = (unsigned long long)va_arg(p->ap, unsigned long);
+	else if (p->flags & LLONG)
+		n = va_arg(p->ap, unsigned long long);
+	else
+		n = (unsigned long long)va_arg(p->ap, unsigned int);
+	if (c == 'u')
+	{
+		p->flags &= ~HASH;
+		return (itoa_base(p, n, 10));
+	}
+	if (p->flags & HASH)
+		p->width -= 2;
+	itoa_base(p, n, 16);
+}

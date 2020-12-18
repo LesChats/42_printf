@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 05:04:40 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/14 06:53:47 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/17 12:42:07 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ unsigned	wcharlen(unsigned c)
 		return (2);
 	else if (c < 0x10000)
 		return (3);
-	else if (c < 0xE080)
+	else if (c < 0xE0080)
 		return (4);
 	return (0);
 }
@@ -29,8 +29,6 @@ static	void putwchar(const unsigned c, const unsigned size)
 {
 	char tmp[4];
 
-	if (!size)
-		return ;
 	if (size == 1)
 		tmp[0] = c;
 	else
@@ -57,17 +55,25 @@ void	pf_putchar(t_prntf *p)
 {
 	const unsigned	c = va_arg(p->ap, unsigned);
 	const unsigned	print = wcharlen(c);
-
+	
 	if (p->width > 0)
 		--p->width;
 	if (!(p->flags & MINUS))
 	{
-		padding(p->width, (p->flags & ZERO)) ;
+		while (p->width > 0)
+		{
+			buffer("          ", (p->width > 10 ) ? 10 : p->width, 0);
+			p->width -= 10;
+		}
 		putwchar(c, print);
 	}
 	else
 	{
 		putwchar(c, print);
-		padding(p->width, (p->flags & ZERO));
+		while (p->width > 0)
+		{
+			buffer("          ", (p->width > 10 ) ? 10 : p->width, 0);
+			p->width -= 10;
+		}
 	}
 } 

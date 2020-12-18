@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:01:00 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/14 12:53:53 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/16 13:53:48 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,33 +45,28 @@ static	const char *shr_pf(const char *s)
 
 int	ft_printf(const char *format, ...)
 {
-	t_prntf	p;
-	// adress or index ?
+	t_prntf	pf;
 	const char *convertion;
-	//does I nedd to initialize all pf to 0 ?
-	//yes => bzero
-
 	//does I realy need format to be in a stuct ?
-	p.format = format;
-	va_start(p.ap, format);
-	while (*(convertion = shr_pf(p.format)))
+	pf.format = format;
+	va_start(pf.ap, format);
+	//maybe change the shr function for index;
+	while (*(convertion = shr_pf(pf.format)))
 	{
-		//printf("\non a trouver un %c\n\n\n", *convertion);
 		//handel some exeption after the %
-		buffer(p.format, convertion - p.format, 0);
-		p.format = convertion + 1;
-		//printf("\n format is = %c\n", *p.format);
-		if (*p.format == '%')
+		buffer(pf.format, convertion - pf.format, 0);
+		pf.format = convertion + 1;
+		if (*pf.format == '%')
 		{
 			buffer("%", 1, 0);
-			++p.format;
+			++pf.format;
 		}
 		else
-			parse(&p);
+			parse(&pf);
 		//somthing like that
-		//	buf_add(&p, p.format, convertion - p.format);
-		// 		p.format = convertion + 1;
+		//	buf_add(&p, pf.format, convertion - pf.format);
+		// 		pf.format = convertion + 1;
 	}
-	return (buffer(p.format, ft_strlen(p.format), 1));
+	return (buffer(pf.format, ft_strlen(pf.format), 1));
 }
 

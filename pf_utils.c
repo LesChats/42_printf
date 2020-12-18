@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 08:58:25 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/14 12:56:16 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/17 16:50:48 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	buffer(const char *str, size_t n, const char flush)
 	static t_bffr	bffr;
 	int		diff;
 
-//	printf("\nsize = %zu \t str == %s\n\n", n, str);
 	diff = BUFF_SZ - bffr.i;
 	while (n > diff)
 	{
@@ -43,23 +42,53 @@ int	buffer(const char *str, size_t n, const char flush)
 	bffr.tlen += n;
 	if (flush)
 		return (end_bffr(&bffr));
-	return (1);
+	return (bffr.tlen);
 }
 
-void	padding(int pad, const int zero)
-{ 
+void	signes(const size_t flags)
+{
+	if (flags & ISNEG)
+		buffer("-", 1, 0);
+	else if (flags & PLUS)
+		buffer("+", 1, 0);
+	else if (flags & SPACE)
+		buffer(" ", 1, 0);
+}
+
+void    padding_signed(const size_t flags, int pad)
+{
 	const int pad_size = (pad > 10) ? 10 : pad;
 
-	if (zero)
+	if (flags & ZERO)
+	{
+		signes(flags);
 		while (pad > 0)
 		{
 			buffer("0000000000", pad_size, 0);
 			pad -= pad_size;
 		}
+		return ;
+	}
+	while (pad > 0)
+	{
+		buffer("          ", pad_size, 0);
+		pad -= pad_size;
+	}
+	signes(flags);
+}
+
+void	padding(int pad, const int zero)
+{ 
+	if (zero)
+		while (pad > 0)
+		{
+			buffer("0000000000", (pad > 10) ? 10 : pad, 0);
+			pad -= 10;
+		}
 	else
 		while (pad > 0)
 		{
-			buffer("          ", pad_size, 0);
-			pad -= pad_size;
+			buffer("          ", (pad > 10) ? 10 : pad, 0);
+			pad -= 10;
 		}
 }

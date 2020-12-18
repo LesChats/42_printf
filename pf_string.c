@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:34:29 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/14 09:01:18 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/17 16:17:46 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	puterror(t_prntf *p)
 
 static void	wstr_intobuffer(char *s, size_t size, t_prntf *p)
 {
-
 	if (p->flags & PRECIZ)
 		size = (size > p->preciz) ? p->preciz : size;
 	if ((p->width > size))
@@ -38,15 +37,16 @@ static void	wstr_intobuffer(char *s, size_t size, t_prntf *p)
 		free(s);
 		return ;
 	}
-	free(s);
 	buffer(s, size, 0);
+	free(s);
 }
 
-static char	*get_wchar(unsigned size, wchar_t c)
+static void	add_wchar(char *dest, unsigned size, unsigned c)
 {
-	char *tmp;
-	if (!(tmp = (char *)malloc(size)))
-		return (0);
+	char tmp[4];
+
+	if (!size)
+		return ;
 	if (size == 1)
 		tmp[0] = (char)c;
 	else
@@ -66,7 +66,7 @@ static char	*get_wchar(unsigned size, wchar_t c)
 		}
 		tmp[size - 1] = (char)(c & 0x3f) | 0x80;
 	}
-	return (tmp);
+	ft_memcpy(dest, tmp, size);
 }
 
 static void	putwstr(t_prntf *p)
@@ -82,7 +82,7 @@ static void	putwstr(t_prntf *p)
 	str.idx = 0;
 	while (*s)
 	{
-		tmp = wcharlen(*s);
+		tmp = wcharlen(*(unsigned *)s);
 		if (tmp + str.idx > str.size)
 		{
 			str.save = str.s;
@@ -92,14 +92,13 @@ static void	putwstr(t_prntf *p)
 			ft_memcpy(str.s, str.save, str.idx);
 			free(str.save);
 		}
-		ft_memcpy(str.s + str.idx, (str.save = get_wchar(tmp, *s++)), tmp);
+		add_wchar(str.s + str.idx, tmp, *(unsigned *)s++);
 		str.idx += tmp;
-		free(str.save);
 	}
 	return (wstr_intobuffer(str.s, str.idx, p));
 }
 
-
+// maybe remove the 0 component from padding....`
 void	pf_putstr(t_prntf *p)
 {
 	size_t		n;
@@ -109,7 +108,7 @@ void	pf_putstr(t_prntf *p)
 		return (putwstr(p));
 	if (!(s = va_arg(p->ap, const char *)))
 		return (puterror(p));
-			n = ft_strlen(s);
+	n = ft_strlen(s);
 	if (p->flags & PRECIZ)
 		n = (n > p->preciz) ? p->preciz : n;
 	if ((p->width > n))
@@ -117,14 +116,9 @@ void	pf_putstr(t_prntf *p)
 		if (p->flags & MINUS)
 		{
 			buffer(s, n, 0);
-			padding(p->width - n, 0);
+			return (padding(p->width - n, 0));
 		}
-		else
-		{
 			padding(p->width - n, 0);
-			buffer(s, n, 0);
-		}
-		return ;
 	}
 	buffer(s, n, 0);
 }

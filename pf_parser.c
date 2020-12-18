@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/14 13:41:37 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/17 16:49:53 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,27 @@ static inline void	parse_preciz_type(t_prntf *p)
 				p->preciz = 0;
 	}	
 	if (*p->format == 'h')
-		p->flags |= (p->format[1] == 'h' && ++p->format) ? CHAR : SHORT;
+	{
+		++p->format;
+		if (*p->format == 'h' && ++p->format)
+			p->flags |= CHAR;
+		else
+			p->flags |= SHORT;
+	}
 	else if (*p->format == 'l')
-		p->flags |= (p->format[1] == 'l' && ++p->format) ? LLONG : LONG;
-	/*
-	else if (*p->format == 'z')
-		p->f |= SIZE_T;
-	else if (*p->format == 'L')
-		p->f |= LLONG;
-	*/
-	else
-		return ;
+	{
+		++p->format;
+		if (*p->format == 'l' && ++p->format)
+			p->flags |= LLONG;
+		else
+			p->flags |= LONG;
+	}
 }
 
 static inline void	parse_type(t_prntf *p)
 {
 	const char c = *p->format++;
-//	printf("in parse c = %c\n", c);	
-// cdefgipsuxX
+// cdefgipsuxnX
 	if (c == 'c')
 		pf_putchar(p);
 	else if (c == 's')
@@ -88,12 +91,17 @@ static inline void	parse_type(t_prntf *p)
 	else if (c == 'd' || c == 'i')
 		pf_putnbr(p);
 	else if (c == 'x' || c == 'X' || c == 'u')
-		pf_puthex(p, c);
-	else 
-		--p->format;
-	/*
+		pf_unsigned(p, c);
 	else if (c == 'p')
-		pf_putpointer(p);
+		pf_adresse(p);
+	else 
+	{
+		buffer("%", 1, 0);
+		while (*p->format != '%')
+			--p->format;
+		++p->format;
+	}
+	/*
 	else if (c == 'e')
 		pf_putnbr_exp(p);
 	else if (c == 'f')

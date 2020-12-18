@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/14 09:37:34 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/17 16:40:19 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define PC		0x2525252525252525L
 # define BUFF_SZ	64
 # define FLAGS_LST	"#-+ 0*"
+# define HEX_U		"0123456789ABCDEF"
+# define HEX_L		"0123456789abcdef"
 # define HASH		0b1
 # define MINUS		0b10
 # define PLUS		0b100
@@ -43,7 +45,8 @@
 # define PRECIZ		0b1000000000
 # define UPPER		0b10000000000
 # define SHORT		0b100000000000
-
+# define ISNEG		0b1000000000000
+# define POINTER	0b10000000000000
 /*
 ** macros
 */
@@ -63,7 +66,7 @@ typedef struct		s_pflags
 // metre a jour apres le premier debug
 typedef struct		s_prntf
 {
-	size_t		flags; 
+	size_t		flags;
 	const char	*format;
 	va_list		ap;
 	int		width;
@@ -99,7 +102,8 @@ void	parse(t_prntf *p);
 void	pf_putchar(t_prntf *p);
 void	pf_putstr(t_prntf *p);
 void	pf_putnbr(t_prntf *p);
-void	pf_puthex(t_prntf *p, const char c);
+void	pf_unsigned(t_prntf *p, const char c);
+void	pf_adresse(t_prntf *p);
 /* comming soon 
 void	pf_putpointet(t_prntf *p);
 void	pf_putnbr_exp(t_prntf *p);
@@ -111,7 +115,9 @@ void	pf_putdouble(t_prntf *p);
 */
 
 int		buffer(const char *str, size_t n, const char flush);
+void		padding_signed(const size_t flags, int pad);
 void		padding(int pad, const int zero);
+void		signes(const size_t flags);
 int		get_len(long long x, int ans);
 unsigned	wcharlen(unsigned c);
 /*
