@@ -6,16 +6,14 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:17:10 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/17 12:23:20 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/18 03:40:27 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void print(t_prntf *p, const char * num, int len)
+void print(t_prntf *p, const char *num, int len)
 {
-//	const int	pad_size = (p->width > 10) ? 10 : p->width;
-//	const	int	pre_size = (p->preciz > 10) ? 10 : p->preciz;
 	while (p->width > 0)
 	{
 		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
@@ -35,10 +33,8 @@ static void print(t_prntf *p, const char * num, int len)
 	buffer(num, len, 0);
 }
 
-static void print_minus(t_prntf *p, const char *num, int len)
+void print_minus(t_prntf *p, const char *num, int len)
 {
-	//const int pad_size = (p->width > 10) ? 10 : p->width;
-	//const int pre_size = (p->preciz > 10) ? 10 : p->preciz;
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)

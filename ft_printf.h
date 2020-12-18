@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/17 16:40:19 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/18 04:13:58 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,11 @@ void	pf_putstr(t_prntf *p);
 void	pf_putnbr(t_prntf *p);
 void	pf_unsigned(t_prntf *p, const char c);
 void	pf_adresse(t_prntf *p);
+void	pf_double(t_prntf *p);
+
 /* comming soon 
 void	pf_putpointet(t_prntf *p);
 void	pf_putnbr_exp(t_prntf *p);
-void	pf_putdouble(t_prntf *p);
 */
 
 /*
@@ -115,11 +116,11 @@ void	pf_putdouble(t_prntf *p);
 */
 
 int		buffer(const char *str, size_t n, const char flush);
-void		padding_signed(const size_t flags, int pad);
 void		padding(int pad, const int zero);
-void		signes(const size_t flags);
 int		get_len(long long x, int ans);
 unsigned	wcharlen(unsigned c);
+void		print_minus(t_prntf *p, const char *num, int len);
+void		print(t_prntf *p, const char *num, int len);
 /*
 ** libft functions
 */

@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/17 16:49:53 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/18 04:11:38 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ static inline void	parse_type(t_prntf *p)
 		pf_unsigned(p, c);
 	else if (c == 'p')
 		pf_adresse(p);
+	else if (c == 'f')
+		pf_double(p);
 	else 
 	{
 		buffer("%", 1, 0);

@@ -6,13 +6,13 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 06:29:28 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/17 16:53:35 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/18 04:01:22 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void print(t_prntf *p, const char * num, int len)
+static void uprint(t_prntf *p, const char * num, int len)
 {
 	if (p->flags & ZERO && (p->preciz = p->width))
 		p->width = 0;
@@ -41,7 +41,7 @@ static void print(t_prntf *p, const char * num, int len)
 	buffer(num, len, 0);
 }
 
-static void print_minus(t_prntf *p, const char *num, int len)
+static void uprint_minus(t_prntf *p, const char *num, int len)
 {
 
 	if (p->flags & HASH)
@@ -88,9 +88,9 @@ static void itoa_base(t_prntf *p, unsigned long long n, int base)
 	}
 	p->width -= len;
 	if (p->flags & MINUS)
-		print_minus(p, tmp + i, len);
+		uprint_minus(p, tmp + i, len);
 	else
-		print(p, tmp + i, len);
+		uprint(p, tmp + i, len);
 }
 
 void	pf_adresse(t_prntf *p)
