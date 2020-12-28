@@ -6,20 +6,20 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:17:10 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/18 03:40:27 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 11:10:27 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void print(t_prntf *p, const char *num, int len)
+static void print(t_prntf *p, const char *num, int len)
 {
 	while (p->width > 0)
 	{
 		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 		p->width -= 10;
 	}
-	if (p->flags & ISNEG)
+if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)
 		buffer("+", 1, 0);
@@ -33,7 +33,7 @@ void print(t_prntf *p, const char *num, int len)
 	buffer(num, len, 0);
 }
 
-void print_minus(t_prntf *p, const char *num, int len)
+static void print_minus(t_prntf *p, const char *num, int len)
 {
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
@@ -100,15 +100,14 @@ void	pf_putnbr(t_prntf *p)
 		n = va_arg(p->ap, long long);
 	else
 		n = (long long)va_arg(p->ap, int);
+	nn = n;
 	if (n < 0)
 	{
 		nn = n * -1;
 		p->flags |= ISNEG;
 		--p->width;
 	}
-	else
-		nn = n;
-	if (p->flags & PLUS || p->flags & SPACE)
+	else if (p->flags & PLUS || p->flags & SPACE)
 		--p->width;
 	itoa_pf(nn, p);
 }

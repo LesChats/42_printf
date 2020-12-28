@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 08:58:25 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/17 16:50:48 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 12:04:36 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	buffer(const char *str, size_t n, const char flush)
 	static t_bffr	bffr;
 	int		diff;
 
+	if (n == 0)
+		return (bffr.tlen);
 	diff = BUFF_SZ - bffr.i;
 	while (n > diff)
 	{
@@ -42,39 +44,7 @@ int	buffer(const char *str, size_t n, const char flush)
 	bffr.tlen += n;
 	if (flush)
 		return (end_bffr(&bffr));
-	return (bffr.tlen);
-}
-
-void	signes(const size_t flags)
-{
-	if (flags & ISNEG)
-		buffer("-", 1, 0);
-	else if (flags & PLUS)
-		buffer("+", 1, 0);
-	else if (flags & SPACE)
-		buffer(" ", 1, 0);
-}
-
-void    padding_signed(const size_t flags, int pad)
-{
-	const int pad_size = (pad > 10) ? 10 : pad;
-
-	if (flags & ZERO)
-	{
-		signes(flags);
-		while (pad > 0)
-		{
-			buffer("0000000000", pad_size, 0);
-			pad -= pad_size;
-		}
-		return ;
-	}
-	while (pad > 0)
-	{
-		buffer("          ", pad_size, 0);
-		pad -= pad_size;
-	}
-	signes(flags);
+	return (42);
 }
 
 void	padding(int pad, const int zero)
@@ -92,3 +62,59 @@ void	padding(int pad, const int zero)
 			pad -= 10;
 		}
 }
+
+/*
+int	add_cto_string(t_string *str, char c)
+{
+	if (str->idx == str->size)
+	{
+		str->save = str->s;
+		str->size <<= 1;
+		if (!(str->s = (char *)malloc(str->size)))
+		{
+			free(str->save);
+			return (0);
+		}
+		ft_memcpy(str->s, str->save, str->idx);
+		free(str->save);
+	}
+	str->s[str->idx++] = c;
+}
+
+static int	add_to_string(t_string *str, const char *src, unsigned len)
+{
+	while (str->idx + len > str->size)
+	{
+		str->save = str->s;
+		str->size <<= 1;
+		if (!(str->s = (char *)malloc(str->size)))
+		{
+			free(str->save);
+			return (0);
+		}
+		ft_memcpy(str->s, str->save, str->idx);
+		free(str->save);
+	}
+	ft_memcpy(str->s + str->idx, src, len);
+	str->idx += len;
+}
+
+void		pf_atoi(t_string *str, uint64_t n)
+{
+	char	tmp[464];
+	int	i;
+
+	if (!n)
+		add_to_string(str, "0", 1);
+	else
+	{
+		i = 464;
+		while (n)
+		{
+			tmp[--i] = '0' + (n % 10);
+			n /= 10;
+		}
+		add_to_string(str, tmp + i, 464 - i);
+	}
+}	
+*/

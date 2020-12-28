@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/18 04:11:38 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 12:13:53 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static inline void	parse_preciz_type(t_prntf *p)
 {
 	if (*p->format == '.')
 	{
-		p->flags |= PRECIZ;
 		++p->format;
+		p->flags |= PRECIZ;
 		if (ISNUM(*p->format))
 			p->preciz = ft_atoii(&p->format);
 		if (*p->format == '*')
@@ -80,6 +80,14 @@ static inline void	parse_preciz_type(t_prntf *p)
 	}
 }
 
+static void	pf_printlen(t_prntf *p)
+{
+		const int i = buffer("", 0, 0);
+		printf("helloo iii = %d\n", i);
+
+	        *va_arg(p->ap, int*) = i; 
+}
+
 static inline void	parse_type(t_prntf *p)
 {
 	const char c = *p->format++;
@@ -95,7 +103,9 @@ static inline void	parse_type(t_prntf *p)
 	else if (c == 'p')
 		pf_adresse(p);
 	else if (c == 'f')
-		pf_double(p);
+		pf_floats(p);
+	else if (c == 'n')
+		pf_printlen(p);
 	else 
 	{
 		buffer("%", 1, 0);
@@ -104,10 +114,7 @@ static inline void	parse_type(t_prntf *p)
 		++p->format;
 	}
 	/*
-	else if (c == 'e')
 		pf_putnbr_exp(p);
-	else if (c == 'f')
-		pf_putdouble(p);
 	else if (c == 'g')
 		;
 		//pass

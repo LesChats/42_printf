@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:01:00 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/16 13:53:48 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 11:57:32 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ int	ft_printf(const char *format, ...)
 		}
 		else
 			parse(&pf);
-		//somthing like that
-		//	buf_add(&p, pf.format, convertion - pf.format);
-		// 		pf.format = convertion + 1;
 	}
 	return (buffer(pf.format, ft_strlen(pf.format), 1));
 }

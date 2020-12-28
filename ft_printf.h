@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/18 04:13:58 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 10:26:41 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <float.h>
+# include <limits.h>
+# include <stdint.h>
 # include <stdio.h> //debug
 
 /*
@@ -104,12 +107,17 @@ void	pf_putstr(t_prntf *p);
 void	pf_putnbr(t_prntf *p);
 void	pf_unsigned(t_prntf *p, const char c);
 void	pf_adresse(t_prntf *p);
-void	pf_double(t_prntf *p);
-
+void	pf_floats(t_prntf *p);	
 /* comming soon 
-void	pf_putpointet(t_prntf *p);
 void	pf_putnbr_exp(t_prntf *p);
 */
+
+/*
+** because float are complicated
+*/
+
+int	fill_decimals(char *str, double decimal, int size);
+//void	fill_float(t_string *str, double f, int dec_siz);
 
 /*
 ** Utils functions
@@ -119,8 +127,7 @@ int		buffer(const char *str, size_t n, const char flush);
 void		padding(int pad, const int zero);
 int		get_len(long long x, int ans);
 unsigned	wcharlen(unsigned c);
-void		print_minus(t_prntf *p, const char *num, int len);
-void		print(t_prntf *p, const char *num, int len);
+//void		pf_atoi(t_string *str, uint64_t n);
 /*
 ** libft functions
 */
@@ -128,4 +135,5 @@ void		print(t_prntf *p, const char *num, int len);
 size_t	ft_strlen(const char *s);
 void	*ft_memcpy(char *dest, const char *src, size_t n);
 int	ft_atoii(const char **str);
+//int	add_cto_string(t_string *str, char c);
 #endif

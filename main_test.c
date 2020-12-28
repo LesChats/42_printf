@@ -3,7 +3,16 @@
 
 int main(int ac, char **av)
 {
-	/* NUMBERS d i u x X
+	if (ac == 2)
+	{
+		int i = 0;
+		printf(av[1], &i, i);
+		printf("|\n\t VS \n");
+		ft_printf(av[1], &i, i);
+		printf("\ni = %d\n", i);
+		printf("|\n");
+	}
+
 	if (ac == 4)
 	{
 		ft_printf(av[1], atoi(av[2]), atoi(av[3]));
@@ -15,12 +24,12 @@ int main(int ac, char **av)
 	{
 //		printf("on test  %%d");
 	
-		ft_printf(av[1], atoi(av[2]));
+		ft_printf(av[1], atof(av[2]));
 		printf("|\n\t VS \n");
-		printf(av[1], atoi(av[2]));
+		printf(av[1], atof(av[2]));
 		printf("|\n");
 	}
-	*/
+	/*
 	wchar_t c = L'漢';
 	wchar_t *s = L"abcdefgfsdfsfsfdfsdfsdfljsdhfklajhfkljdfhkldfjhgdklfjghldksjfghsdlkfjhgsdklfjhgsdklfjhgdklfjhglkdjfghldksjfghlksjdfhglksjdhfglksjdfhglkjfghlkjhh"; 
 	if (ac == 3)
@@ -36,6 +45,7 @@ int main(int ac, char **av)
 	{
 		printf("\n%p\n", s);
 	}
+	*/
 	return (0);
 }
 	
