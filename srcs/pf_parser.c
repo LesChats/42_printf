@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 12:13:53 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 14:11:54 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,11 @@ static inline void	parse_flags_width(t_prntf *p)
 	if (p->flags & WILLCARD)
 		if ((p->width = (int)va_arg(p->ap, int)) < 0)
 		{
-			p->flags | MINUS;
+			p->flags |= MINUS;
 			p->width = -p->width;
 		}
-	//priorite du + sur le blanc
 	if (p->flags & PLUS)
 		p->flags &= ~SPACE;
-	// prio - sur 0
 	if (p->flags & MINUS)
 		p->flags &= ~ZERO;
 }
@@ -109,9 +107,9 @@ static inline void	parse_type(t_prntf *p)
 	else 
 	{
 		buffer("%", 1, 0);
-		while (*p->format != '%')
-			--p->format;
-		++p->format;
+		//while (*p->format != '%')
+		--p->format;
+		//++p->format;
 	}
 	/*
 		pf_putnbr_exp(p);

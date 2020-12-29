@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:34:29 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/17 16:17:46 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 15:27:10 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 static void	puterror(t_prntf *p)
 {
-	if ((p->flags & PRECIZ) & p->preciz > 5)
+	if ((p->flags & PRECIZ) && p->preciz > 5)
 		buffer("(null)", 6, 0);
 }
 
 static void	wstr_intobuffer(char *s, size_t size, t_prntf *p)
 {
 	if (p->flags & PRECIZ)
-		size = (size > p->preciz) ? p->preciz : size;
-	if ((p->width > size))
+		size = (size > (size_t)p->preciz) ? (size_t)p->preciz : size;
+	if (((size_t)p->width > size))
 	{
 		if (p->flags & MINUS)
 		{
@@ -59,12 +59,12 @@ static void	add_wchar(char *dest, unsigned size, unsigned c)
 				tmp [0] = (char)((c >> 12 ) & 0xf) | 0xE0;
 			else
 			{
-				tmp[0] = (char)((c >> 18) & 7) | 0xF0;
-				tmp[1] = (char)((c >> 12) & 0x3f) | 0x80;
+				tmp[0] = (char)(((c >> 18) & 7) | 0xF0);
+				tmp[1] = (char)(((c >> 12) & 0x3f) | 0x80);
 			}
-			tmp[size - 2] = (char)((c >> 6) & 0x3f) | 0x80;
+			tmp[size - 2] = (char)(((c >> 6) & 0x3f) | 0x80);
 		}
-		tmp[size - 1] = (char)(c & 0x3f) | 0x80;
+		tmp[size - 1] = (char)((c & 0x3f) | 0x80);
 	}
 	ft_memcpy(dest, tmp, size);
 }
@@ -77,7 +77,7 @@ static void	putwstr(t_prntf *p)
 
 	if (!(s = va_arg(p->ap, wchar_t *)))	
 		return (puterror(p));
-	if (!(str.s = (char *)malloc((str.size = BUFF_SZ) + 1)))
+	if (!(str.s = (char *)malloc((str.size = BUFF_SZ))))
 		return ;
 	str.idx = 0;
 	while (*s)
@@ -110,8 +110,8 @@ void	pf_putstr(t_prntf *p)
 		return (puterror(p));
 	n = ft_strlen(s);
 	if (p->flags & PRECIZ)
-		n = (n > p->preciz) ? p->preciz : n;
-	if ((p->width > n))
+		n = (n > (size_t)p->preciz) ? (size_t)p->preciz : n;
+	if (((size_t)p->width > n))
 	{
 		if (p->flags & MINUS)
 		{

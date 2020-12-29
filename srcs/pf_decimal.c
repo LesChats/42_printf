@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 02:30:30 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 11:00:40 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 13:51:10 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int last_decimal(char *str, double decimal, int idx)
 
 int      fill_decimals(char *str, double decimal, int size)
 {
-	double	tmp;
 	int	unity;
 	int	idx;
 	

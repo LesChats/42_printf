@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 08:14:37 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 11:07:52 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 13:46:51 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ static void print_minus(t_prntf *p, const char *num, char *dec, int len)
 	}
 }
 
-static void	error_buff(t_prntf *p, const char *s, int n)
+static void	error_buff(t_prntf *p, const char *s)
 {
 	char *empty;
 
 	p->preciz = 0;
-	if (!(empty = (char *)malloc(0)));
-	return ;
+	if (!(empty = (char *)malloc(0)))
+		return ;
 	if (p->flags & MINUS)
 		print_minus(p, s, empty, 3);
 	else
@@ -98,7 +98,7 @@ void	pf_floats(t_prntf *p)
 		p->preciz = 6; 
 	n = (long double)va_arg(p->ap, double);
 	if (n != n)
-		return (error_buff(p, "NaN", 3));
+		return (error_buff(p, "NaN"));
 	if (n < 0)
 	{
 		p->flags |= ISNEG;
@@ -108,7 +108,7 @@ void	pf_floats(t_prntf *p)
 	else if (p->flags & PLUS || p->flags & SPACE)
 		--p->width;
 	if (n > DBL_MAX)
-		return (error_buff(p, "inf", 3));
+		return (error_buff(p, "inf"));
 	integral_part = (unsigned long long)n;
 	printf("int part = %lld\n", integral_part);
 	if (!(dec = (char *)malloc(p->preciz)))

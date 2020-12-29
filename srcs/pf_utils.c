@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 08:58:25 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 12:04:36 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 15:32:46 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@ static int end_bffr(t_bffr *bffr)
 int	buffer(const char *str, size_t n, const char flush)
 {
 	static t_bffr	bffr;
-	int		diff;
+	size_t		diff;
 
 	if (n == 0)
+	{	
+		if (flush)
+			return (end_bffr(&bffr));
 		return (bffr.tlen);
+	}
 	diff = BUFF_SZ - bffr.i;
 	while (n > diff)
 	{
