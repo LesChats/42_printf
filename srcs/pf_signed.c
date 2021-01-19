@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:17:10 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 11:10:27 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/29 08:18:20 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static void	itoa_pf(unsigned long long n, t_prntf *p)
 	len = 21 - i;
 	if (p->flags & PRECIZ)
 	{
+		if (!p->preciz && tmp[i] == '0')
+			len = 0;
 		p->preciz -= len;
 		if (p->preciz > 0)
 			p->width -= p->preciz;

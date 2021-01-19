@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 10:26:41 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/29 10:27:06 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 ** macros
 */
 
-# define ISNUM(x) (x > '0' && x < 58)
+# define ISNUM(x) (x > 47  && x < 58)
 
 /*
 ** structures
@@ -108,6 +108,7 @@ void	pf_putnbr(t_prntf *p);
 void	pf_unsigned(t_prntf *p, const char c);
 void	pf_adresse(t_prntf *p);
 void	pf_floats(t_prntf *p);	
+void	pf_notfound(t_prntf *p);
 /* comming soon 
 void	pf_putnbr_exp(t_prntf *p);
 */
@@ -116,7 +117,7 @@ void	pf_putnbr_exp(t_prntf *p);
 ** because float are complicated
 */
 
-int	fill_decimals(char *str, double decimal, int size);
+int	fill_decimals(char *str, double decimal, int size, char zero);
 //void	fill_float(t_string *str, double f, int dec_siz);
 
 /*

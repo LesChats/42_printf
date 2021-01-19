@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:34:29 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 15:27:10 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 19:09:43 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,22 @@
 
 static void	puterror(t_prntf *p)
 {
-	if ((p->flags & PRECIZ) && p->preciz > 5)
-		buffer("(null)", 6, 0);
+	int len;
+
+	len  = 6;
+	if ((p->flags & PRECIZ) && p->preciz < 6)
+		len = 0 ;
+	if (p->width > len)
+	{
+		if (p->flags & MINUS)
+		{
+			buffer("(null)", len, 0);
+			padding(p->width - len, 0);
+			return ;
+		}
+		padding(p->width - len, 0);
+	}
+	buffer("(null)", len, 0);
 }
 
 static void	wstr_intobuffer(char *s, size_t size, t_prntf *p)
@@ -118,7 +132,7 @@ void	pf_putstr(t_prntf *p)
 			buffer(s, n, 0);
 			return (padding(p->width - n, 0));
 		}
-			padding(p->width - n, 0);
+		padding(p->width - n, 0);
 	}
 	buffer(s, n, 0);
 }

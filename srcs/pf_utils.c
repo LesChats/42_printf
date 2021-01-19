@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 08:58:25 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 15:32:46 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/29 19:07:05 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,19 @@ int	buffer(const char *str, size_t n, const char flush)
 			return (end_bffr(&bffr));
 		return (bffr.tlen);
 	}
+	bffr.tlen += n;
 	diff = BUFF_SZ - bffr.i;
 	while (n > diff)
 	{
 		n -= diff;
 		ft_memcpy(bffr.bff + bffr.i, str, diff);
 		bffr.i = 0;
-		bffr.tlen += BUFF_SZ;
 		write(1, bffr.bff, BUFF_SZ);
 		str += diff;
 		diff = BUFF_SZ;
 	}	
 	ft_memcpy(bffr.bff + bffr.i, str, n);
 	bffr.i += n;
-	bffr.tlen += n;
 	if (flush)
 		return (end_bffr(&bffr));
 	return (42);

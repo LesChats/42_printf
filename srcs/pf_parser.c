@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 14:11:54 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/29 09:23:15 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,33 +57,41 @@ static inline void	parse_preciz_type(t_prntf *p)
 		if (ISNUM(*p->format))
 			p->preciz = ft_atoii(&p->format);
 		if (*p->format == '*')
+		{
+			++p->format;
 			if ((p->preciz = (int)va_arg(p->ap, int)) < 0)
-				p->preciz = 0;
+				p->flags &= ~PRECIZ;
+		}
 	}	
 	if (*p->format == 'h')
 	{
-		++p->format;
+		/*
 		if (*p->format == 'h' && ++p->format)
 			p->flags |= CHAR;
 		else
 			p->flags |= SHORT;
+		*/
+		++p->format;
+		p->flags |= (*p->format == 'h' && ++p->format) ? CHAR : SHORT;
 	}
 	else if (*p->format == 'l')
 	{
-		++p->format;
+		/*
 		if (*p->format == 'l' && ++p->format)
 			p->flags |= LLONG;
 		else
 			p->flags |= LONG;
+		*/
+		++p->format;
+		p->flags |= (*p->format == 'l' && ++p->format) ? LLONG : LONG;
 	}
 }
 
 static void	pf_printlen(t_prntf *p)
 {
 		const int i = buffer("", 0, 0);
-		printf("helloo iii = %d\n", i);
-
-	        *va_arg(p->ap, int*) = i; 
+	        
+		*va_arg(p->ap, int*) = i; 
 }
 
 static inline void	parse_type(t_prntf *p)
@@ -96,7 +104,7 @@ static inline void	parse_type(t_prntf *p)
 		pf_putstr(p);
 	else if (c == 'd' || c == 'i')
 		pf_putnbr(p);
-	else if (c == 'x' || c == 'X' || c == 'u')
+	else if (c == 'x' || c == 'X' || c == 'u' || c == 'o')
 		pf_unsigned(p, c);
 	else if (c == 'p')
 		pf_adresse(p);
@@ -106,17 +114,9 @@ static inline void	parse_type(t_prntf *p)
 		pf_printlen(p);
 	else 
 	{
-		buffer("%", 1, 0);
-		//while (*p->format != '%')
 		--p->format;
-		//++p->format;
+		pf_notfound(p);
 	}
-	/*
-		pf_putnbr_exp(p);
-	else if (c == 'g')
-		;
-		//pass
-	*/
 }
 
 void	parse(t_prntf *p)

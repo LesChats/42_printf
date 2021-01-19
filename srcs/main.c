@@ -1,18 +1,20 @@
 #include "ft_printf.h"
+#include <string.h>
 #include <locale.h>
+#include <stdint.h>
 
-int main(void)
+
+int main(int ac, char **av)
 {
 	int i;
 	int j;
-
-	setlocale(LC_ALL, "");
-	
-	printf("\nprintf(\"%%ls\", L\"我是一只猫。)\n");
-	i = ft_printf("%ls", L"我是一只猫。");
-	printf(" -> %d for my PF\n", i);
-	j = printf("%ls", L"我是一只猫。");
-	printf(" -> %d for LIBC PF\n", j);
-	ft_printf("\nlalalalala\n");
+	char c = 0;
+	void *p = NULL;	
+	//printf(av[1], atoi(av[2]), av[3]);
+	i = printf(av[1], atoi(av[2]));
+	printf("|\n\t VS \n");
+	j = ft_printf(av[1], atoi(av[2]));
+	printf("|\n %d VS %d\n", i, j);
+	//ft_printf(av[1], atoi(av[2]), av[3]);
 	return (0);
 }

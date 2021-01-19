@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 08:14:37 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 13:46:51 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/29 15:29:00 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ static void print_minus(t_prntf *p, const char *num, char *dec, int len)
 		buffer("+", 1, 0);
 	else if (p->flags & SPACE)
 		buffer(" ", 1, 0);
+	if (p->flags & ZERO)
+		while (p->width > 0)
+		{	
+			buffer("000000000", (p->width > 9) ? 9 : p->width, 0);
+			p->width -= 9;
+		}	
 	buffer(num, len, 0);
 	if (p->preciz)
 		buffer(dec, p->preciz, 0);
@@ -55,6 +61,7 @@ static void	error_buff(t_prntf *p, const char *s)
 	char *empty;
 
 	p->preciz = 0;
+	p->width -= 3;
 	if (!(empty = (char *)malloc(0)))
 		return ;
 	if (p->flags & MINUS)
@@ -74,6 +81,8 @@ static void	itoa_float(t_prntf *p, unsigned long long n, char *dec)
 		tmp[--i] = '.';
 		p->width -= p->preciz;
 	}
+	else if (p->flags & HASH)
+		tmp[--i] = '.';
 	(!n) ? tmp[--i] = '0' : 0;
 	while (n)
 	{
@@ -82,24 +91,28 @@ static void	itoa_float(t_prntf *p, unsigned long long n, char *dec)
 	}
 	len = 21 - i;
 	p->width -= len;
-	if (p->flags & MINUS)
+	if (p->flags & MINUS || p->flags & ZERO)
+	{	
+		if (p->flags & MINUS)
+			p->flags &= ~ZERO;
 		return (print_minus(p, tmp + i, dec, len));
+	}
 	print(p, tmp + i, dec, len);
 }
 
 
 void	pf_floats(t_prntf *p)
 {
-	long double		n;
+	double			n;
 	char			*dec;
-	unsigned long long	integral_part;
+	unsigned long long	it;
 
 	if (!(p->flags & PRECIZ))
 		p->preciz = 6; 
-	n = (long double)va_arg(p->ap, double);
+	n = (double)va_arg(p->ap, double);
 	if (n != n)
-		return (error_buff(p, "NaN"));
-	if (n < 0)
+		return (error_buff(p, "nan"));
+	if ((*(int64_t *)&n & (1ull << 63)))
 	{
 		p->flags |= ISNEG;
 		n = 0.0 - n;
@@ -109,11 +122,10 @@ void	pf_floats(t_prntf *p)
 		--p->width;
 	if (n > DBL_MAX)
 		return (error_buff(p, "inf"));
-	integral_part = (unsigned long long)n;
-	printf("int part = %lld\n", integral_part);
+	it = (unsigned long long)n;
 	if (!(dec = (char *)malloc(p->preciz)))
 		return ;
-	if (fill_decimals(dec, n - (double)integral_part, p->preciz))
-		++integral_part;
-	itoa_float(p, integral_part, dec);
+	if (fill_decimals(dec, n - (double)it, p->preciz, (it % 2)))
+		++it;
+	itoa_float(p, it, dec);
 }

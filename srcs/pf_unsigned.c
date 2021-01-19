@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 06:29:28 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/18 04:01:22 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/29 19:11:13 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static void uprint(t_prntf *p, const char * num, int len)
 {
+	p->width -= len;
+	if (p->flags & HASH)
+		p->width -= 2;
 	if (p->flags & ZERO && (p->preciz = p->width))
 		p->width = 0;
 	while (p->width > 0)
@@ -43,9 +46,15 @@ static void uprint(t_prntf *p, const char * num, int len)
 
 static void uprint_minus(t_prntf *p, const char *num, int len)
 {
-
+	p->width -= len;
+	if (p->flags & POINTER)
+	{
+		(p->flags & PLUS) ? buffer("+", 1, 0) : 0;
+		(p->flags & SPACE) ? buffer(" ", 1 , 0) : 0;
+	}
 	if (p->flags & HASH)
 	{
+		p->width -= 2;
 		if (p->flags & UPPER)
 			buffer("0X", 2, 0);
 		else
@@ -82,11 +91,12 @@ static void itoa_base(t_prntf *p, unsigned long long n, int base)
 	len = 21 - i;
 	if (p->flags & PRECIZ)
 	{
+		if (!p->preciz && tmp[i] == '0')
+			len = 0;
 		p->preciz -= len;
 		if (p->preciz > 0)
 			p->width -= p->preciz;
 	}
-	p->width -= len;
 	if (p->flags & MINUS)
 		uprint_minus(p, tmp + i, len);
 	else
@@ -96,24 +106,23 @@ static void itoa_base(t_prntf *p, unsigned long long n, int base)
 void	pf_adresse(t_prntf *p)
 {
 	void * ptr;
-	ptr = va_arg(p->ap, void *);
+
+	if(!(ptr = va_arg(p->ap, void *)))
+	{
+		p->preciz = 0;
+		//p->width -= 5;
+		if (p->flags & MINUS)
+			uprint_minus(p, "(nil)", 5);
+		else
+			uprint(p, "(nil)", 5);
+		return ;
+	}
 	p->flags |= HASH;
 	p->flags |= POINTER;
 	if (p->flags & PRECIZ)
 		p->flags &= ~ZERO;
-	if (p->flags & PLUS)
-	{
+	if (p->flags & PLUS || p->flags & SPACE)
 		--p->width;
-		if (p->flags & MINUS)
-			buffer("+", 1, 0);
-	}
-	else if (p->flags & SPACE)
-	{
-		--p->width;
-		if (p->flags & MINUS)
-			buffer(" ", 1, 0);
-	}
-	p->width -= 2;
 	itoa_base(p, (unsigned long long)ptr, 16);
 }
 
@@ -135,12 +144,13 @@ void    pf_unsigned(t_prntf *p, char c)
 		n = va_arg(p->ap, unsigned long long);
 	else
 		n = (unsigned long long)va_arg(p->ap, unsigned int);
-	if (c == 'u')
+	if (c == 'u' || c == 'o')
 	{
 		p->flags &= ~HASH;
-		return (itoa_base(p, n, 10));
+		(c == 'u') ? itoa_base(p, n, 10) : itoa_base(p, n, 8);
+		return ;
 	}
-	if (p->flags & HASH)
-		p->width -= 2;
+	if (!n)
+		p->flags &= ~HASH;
 	itoa_base(p, n, 16);
 }

@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:01:00 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 11:57:32 by gcc              ###   ########.fr       */
+/*   Updated: 2020/12/28 17:38:43 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ int	ft_printf(const char *format, ...)
 		//handel some exeption after the %
 		buffer(pf.format, convertion - pf.format, 0);
 		pf.format = convertion + 1;
+		//if (!*pf.format || (*pf.format == ' ' && (!pf.format[1]
+		//|| (!pf.format[2] && pf.format[1] == 'h'))))
+		//	return (buffer("", 0, 1));
 		if (*pf.format == '%')
 		{
 			buffer("%", 1, 0);
