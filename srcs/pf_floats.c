@@ -3,129 +3,126 @@
 /*                                                        :::      ::::::::   */
 /*   pf_floats.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/20 08:14:37 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/29 15:29:00 by gcc              ###   ########.fr       */
+/*   Created: 2021/01/18 20:05:27 by abaudot           #+#    #+#             */
+/*   Updated: 2021/01/20 01:05:00 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "dtoa.h"
+#include <stdio.h>
 
-static void print(t_prntf *p, const char * num, char *dec, int len)
+static int d_round(char *s, int preciz, int16_t *info)
 {
-	while (p->width > 0)
-	{
-		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
-		p->width -= 10;
-	}
-	if (p->flags & ISNEG)
-		buffer("-", 1, 0);
-	else if (p->flags & PLUS)
-		buffer("+", 1, 0);
-	else if (p->flags & SPACE)
-		buffer(" ", 1, 0);
-	buffer(num, len, 0);
-	if (p->preciz)
-		buffer(dec, p->preciz, 0);
-	free(dec);
+    const int p_save = preciz;
+
+    if (preciz >= *info)
+        return (preciz - *info + 1);
+    if (*(s + preciz) > '4')
+    {
+        while (++preciz < *info)
+            if (*(s + preciz) > '0')
+            {
+                s += p_save;
+                while (*--s == '9')
+                    *s = '0';
+                if (*s == '.')
+                    while (*--s == '9')
+                        *s = '0';
+                *s += 1;
+                break ;
+            }
+    }
+    *info = p_save;
+    if (p_save)
+        ++*info;
+    return (0);
 }
 
-static void print_minus(t_prntf *p, const char *num, char *dec, int len) 
+static void print(t_prntf *p, char *res, t_tuple info)
 {
-	if (p->flags & ISNEG)
-		buffer("-", 1, 0);
-	else if (p->flags & PLUS)
-		buffer("+", 1, 0);
-	else if (p->flags & SPACE)
-		buffer(" ", 1, 0);
-	if (p->flags & ZERO)
-		while (p->width > 0)
-		{	
-			buffer("000000000", (p->width > 9) ? 9 : p->width, 0);
-			p->width -= 9;
-		}	
-	buffer(num, len, 0);
-	if (p->preciz)
-		buffer(dec, p->preciz, 0);
-	free(dec);
-	while (p->width > 0)
-	{
-		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
-		p->width -= 10;
-	}
+    const int len = info.pts + info.index;
+
+    p->width -= len;
+    while (p->width > 0)
+    {
+        buffer("          ", (p->width > 10) ? 10 : p->width, 0);
+        p->width -= 10;
+    }
+    if (p->flags & ISNEG)
+        buffer("-", 1, 0);
+    else if (p->flags & PLUS)
+        buffer("+", 1, 0);
+    else if (p->flags & SPACE)
+        buffer(" ", 1, 0);
+    buffer(res, len, 0);
+    if (p->preciz > 0)
+    {
+        if (!info.pts)
+            buffer(".", 1, 0);
+        while (p->preciz > 0)
+        {
+            buffer("0000000000", (p->preciz > 10) ? 10 : p->preciz, 0);
+            p->preciz -= 10;
+        }
+    }
 }
 
-static void	error_buff(t_prntf *p, const char *s)
+static void print_minus(t_prntf *p, char *res, t_tuple info)
 {
-	char *empty;
+    const int len = (info.pts > 0) ? info.pts + p->preciz + 1 : info.index;
 
-	p->preciz = 0;
-	p->width -= 3;
-	if (!(empty = (char *)malloc(0)))
-		return ;
-	if (p->flags & MINUS)
-		print_minus(p, s, empty, 3);
-	else
-		print(p, s, empty, 3);
+    if (p->flags & ISNEG)
+        buffer("-", 1, 0);
+    else if (p->flags & PLUS)
+        buffer("+", 1, 0);
+    else if (p->flags & SPACE)
+        buffer(" ", 1, 0);
+    buffer(res, len, 0);
+    if (p->preciz > 0)
+    {
+        if (!info.pts)
+            buffer(".", 1, 0);
+        while (p->preciz > 0)
+        {
+            buffer("0000000000", (p->preciz > 10) ? 10 : p->preciz, 0);
+            p->width -= 10;
+        }
+    }
+    p->width -= len;
+    while (p->width > 0)
+    {
+        buffer("          ", (p->width > 10) ? 10 : p->width, 0);
+        p->preciz -= 10;
+    }
 }
 
-static void	itoa_float(t_prntf *p, unsigned long long n, char *dec)
+void        pf_floats(t_prntf *p)
 {
-	char tmp[21];
-	int i;
-	int len;
-	i = 21;
-	if (p->preciz)
-	{
-		tmp[--i] = '.';
-		p->width -= p->preciz;
-	}
-	else if (p->flags & HASH)
-		tmp[--i] = '.';
-	(!n) ? tmp[--i] = '0' : 0;
-	while (n)
-	{
-		tmp[--i] = '0' + (n % 10);
-		n /= 10;
-	}
-	len = 21 - i;
-	p->width -= len;
-	if (p->flags & MINUS || p->flags & ZERO)
-	{	
-		if (p->flags & MINUS)
-			p->flags &= ~ZERO;
-		return (print_minus(p, tmp + i, dec, len));
-	}
-	print(p, tmp + i, dec, len);
-}
+    double  n;
+    char    *res;
+    t_tuple n_info;
 
-
-void	pf_floats(t_prntf *p)
-{
-	double			n;
-	char			*dec;
-	unsigned long long	it;
-
-	if (!(p->flags & PRECIZ))
-		p->preciz = 6; 
-	n = (double)va_arg(p->ap, double);
-	if (n != n)
-		return (error_buff(p, "nan"));
-	if ((*(int64_t *)&n & (1ull << 63)))
-	{
-		p->flags |= ISNEG;
-		n = 0.0 - n;
-		--p->width;
-	}
-	else if (p->flags & PLUS || p->flags & SPACE)
-		--p->width;
-	if (n > DBL_MAX)
-		return (error_buff(p, "inf"));
-	it = (unsigned long long)n;
-	if (!(dec = (char *)malloc(p->preciz)))
-		return ;
-	if (fill_decimals(dec, n - (double)it, p->preciz, (it % 2)))
-		++it;
-	itoa_float(p, it, dec);
+    if (!(p->flags & PRECIZ))
+        p->preciz = 6;
+    n = va_arg(p->ap, double);
+    if ((*(uint64_t *)&n >> 63))
+    {
+        p->flags |= ISNEG;
+        n = -n;
+        --p->width;
+    }
+    else if (p->flags & PLUS || p->flags & SPACE)
+        --p->width;
+    n_info = udtoa(n, &res);
+    if (n_info.index == -1)
+        return;
+    n_info.index -= n_info.pts;
+    if (n_info.pts > 0)
+        p->preciz = d_round(res + n_info.pts + 1, p->preciz,
+                &n_info.index);
+    if (p->flags & MINUS)
+        return (print_minus(p, res, n_info));
+    print(p, res, n_info);
 }

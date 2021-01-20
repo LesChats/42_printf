@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/29 10:27:06 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/19 21:54:13 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ void	pf_putnbr_exp(t_prntf *p);
 ** because float are complicated
 */
 
-int	fill_decimals(char *str, double decimal, int size, char zero);
 //void	fill_float(t_string *str, double f, int dec_siz);
 
 /*

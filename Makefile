@@ -6,7 +6,7 @@
 #    By: gcc <marvin@42.fr>                         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/28 13:11:20 by gcc               #+#    #+#              #
-#    Updated: 2020/12/29 18:34:23 by gcc              ###   ########.fr        #
+#    Updated: 2021/01/19 21:58:55 by abaudot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ FLAGS = -Wall -Wextra -Werror -O2 -fPIC
 
 LIBFT = libft
 
+NAME	=	libftprintf.a
 DIR_S = srcs
 
 DIR_O = obj
@@ -30,22 +31,24 @@ SOURCES = ft_printf.c \
 	  pf_unsigned.c \
 	  pf_string.c \
 	  pf_char.c \
-	  pf_decimal.c \
-	  pf_floats.c \
 	  pf_notfound.c \
+	  pf_floats.c \
+	  d_libft.c \
+	  d_buff.c \
+	  d_string.c\
+	  pf_dtoa.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
 OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
 
-NAME=libftprintf.a
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
-$(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)/ft_printf.h
+$(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)
 	@mkdir -p obj
 	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
 
@@ -69,4 +72,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: fclean re norme all clean
-
