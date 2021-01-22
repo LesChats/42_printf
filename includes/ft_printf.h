@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/19 21:54:13 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/21 02:24:50 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 
 # define HIMAGIC	0x8080808080808080L
 # define LOMAGIC	0x0101010101010101L
-# define PC		0x2525252525252525L
+# define PC			0x2525252525252525L
+# define Z 			0x0000000000000000L
 # define BUFF_SZ	64
 # define FLAGS_LST	"#-+ 0*"
 # define HEX_U		"0123456789ABCDEF"
@@ -107,7 +108,8 @@ void	pf_putstr(t_prntf *p);
 void	pf_putnbr(t_prntf *p);
 void	pf_unsigned(t_prntf *p, const char c);
 void	pf_adresse(t_prntf *p);
-void	pf_floats(t_prntf *p);	
+void	pf_floats(t_prntf *p);
+void    pf_exponent(t_prntf *p);
 void	pf_notfound(t_prntf *p);
 /* comming soon 
 void	pf_putnbr_exp(t_prntf *p);

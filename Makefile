@@ -6,7 +6,7 @@
 #    By: gcc <marvin@42.fr>                         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/28 13:11:20 by gcc               #+#    #+#              #
-#    Updated: 2021/01/19 21:58:55 by abaudot          ###   ########.fr        #
+#    Updated: 2021/01/21 16:08:33 by abaudot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,9 @@ SOURCES = ft_printf.c \
 	  pf_floats.c \
 	  d_libft.c \
 	  d_buff.c \
+	  d_utils.c \
 	  d_string.c\
+	  pf_exponent.c\
 	  pf_dtoa.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))

@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/29 09:23:15 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/21 02:25:45 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ static inline void	parse_type(t_prntf *p)
 		pf_adresse(p);
 	else if (c == 'f')
 		pf_floats(p);
+	else if (c == 'e')
+		pf_exponent(p);
 	else if (c == 'n')
 		pf_printlen(p);
 	else 

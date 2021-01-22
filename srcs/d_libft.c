@@ -6,7 +6,7 @@
 /*   By: abaudot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 01:03:28 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/19 17:26:33 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/20 15:13:07 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "dtoa.h"
@@ -56,9 +56,8 @@ uint16_t    update_index(char *res, uint32_t n, uint16_t index)
     ft_memcpy(res + index, itoa_arr, itoa_len);
     return (itoa_len);
 }
-/******************************************/
 
-char *  ft_strdup(char *src, int len)
+char	*ft_strdup(char *src, int len)
 {
     char *ans;
 
@@ -67,4 +66,12 @@ char *  ft_strdup(char *src, int len)
     ft_memcpy(ans, src, len);
     *(ans + len) = 0;
     return (ans);
+}
+
+void ft_sswap(char *a, char *b)
+{
+	const char tmp = *a;
+
+	*a = *b;
+	*b = tmp;
 }

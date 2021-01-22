@@ -6,54 +6,19 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 06:25:29 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 18:53:32 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/21 02:27:28 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static inline size_t	byte_check(const char *cp, const char *s)
-{
-	if (!*cp)
-		return (cp - s);
-	if (!cp[1])
-		return (cp - s + 1);
-	if (!cp[2])
-		return (cp - s + 2);
-	if (!cp[3])
-		return (cp - s + 3);
-	if (!cp[4])
-		return (cp - s + 4);
-	if (!cp[5])
-		return (cp - s + 5);
-	if (!cp[6])
-		return (cp - s + 6);
-	if (!cp[7])
-		return (cp - s + 7);
-	return (0);
-}
-
 size_t					ft_strlen(const char *s)
 {
-	size_t		word;
-	size_t		*s_ptr;
-	size_t		ans;
-	const char	*cpy;
+	const char * const s_sav = s;
 
-	if (!*s)
-		return (0);
-	cpy = s;
-	while ((size_t)cpy & 0b111)
-		if (*cpy++ == 0)
-			return (cpy - s - 1);
-	s_ptr = (size_t *)cpy;
-	while (1)
-	{
-		word = *s_ptr++;
-		if (((word - LOMAGIC) & ~word & HIMAGIC))
-			if ((ans = byte_check((const char *)(s_ptr - 1), s)))
-				return (ans);
-	}
+	while (*s)
+		++s;
+	return ((size_t)(s - s_sav));
 }
 
 static inline void	wordcopy(size_t dstp, size_t srcp, size_t len)
@@ -109,7 +74,7 @@ int	ft_atoii(const char **str)
 	unsigned char	c;
 	long int	res;
 	const char	*s; 
-	
+
 	s = *str;
 	res = 0;
 	if (!*s)
@@ -123,4 +88,25 @@ int	ft_atoii(const char **str)
 		(*str)++;
 	}
 	return ((int)res);
+}
+
+void    ft_bzero(void *s, size_t n)
+{
+	unsigned long   *dstp;
+	unsigned char  *dstb;
+
+	if (n >= 8)
+	{
+		dstp = (unsigned long*)s;
+		while (n >= 8)
+		{
+			*dstp++ = Z;
+			n -= 8;
+		}
+		dstb = (unsigned char*)dstp;
+	}
+	else
+		dstb = (unsigned char*)s;
+	while (n--)
+		*dstb++ = 0;
 }

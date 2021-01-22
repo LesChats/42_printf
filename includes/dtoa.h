@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 21:44:34 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/19 17:30:01 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/22 04:21:30 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define MANTIS_SIZE    52
 # define BIGINT_SIZE    300
 # define DECIMAL_START  150
+
+#include <stdio.h>
 
 typedef struct  s_dbuff
 {
@@ -43,6 +45,11 @@ uint16_t    ft_itoa(uint32_t n, char *itoa_arr);
 uint16_t    update_index(char *res, uint32_t n, uint16_t index);
 uint16_t    get_len_int(uint32_t x);
 char        *ft_strdup(char *src, int len);
+int			d_round(char *s, int preciz, int16_t pts, int16_t *info);
+void		fill_space(char *filler, int size);
+int16_t		mouv_pts(char *res, int16_t pts, int16_t *info);
+void		buffer_exp(char *s, int ex, t_tuple info);
+void		ft_sswap(char *a, char *b);
 #endif
 
 
