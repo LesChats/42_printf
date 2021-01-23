@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 21:13:31 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/19 18:48:38 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/22 12:24:42 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_tuple d_nan(uint64_t mantissa, char **s)
     }
     else
     {
-        if (!(*s = ft_strdup("NaN", 3)))
+        if (!(*s = ft_strdup("nan", 3)))
             ans.index = -1;
     }
     return (ans);

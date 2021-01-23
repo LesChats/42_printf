@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 21:44:34 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/22 04:21:30 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/22 15:53:02 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ char        *ft_strdup(char *src, int len);
 int			d_round(char *s, int preciz, int16_t pts, int16_t *info);
 void		fill_space(char *filler, int size);
 int16_t		mouv_pts(char *res, int16_t pts, int16_t *info);
-void		buffer_exp(char *s, int ex, t_tuple info);
+void		buffer_exp(char *s, int ex, t_tuple info, int preciz);
 void		ft_sswap(char *a, char *b);
+void		nill_nan(char *ans, int len, size_t flags);
+int		d_0round(char *s, int preciz, int16_t *info);
 #endif
 
 

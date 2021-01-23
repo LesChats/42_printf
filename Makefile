@@ -6,7 +6,7 @@
 #    By: gcc <marvin@42.fr>                         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/28 13:11:20 by gcc               #+#    #+#              #
-#    Updated: 2021/01/21 16:08:33 by abaudot          ###   ########.fr        #
+#    Updated: 2021/01/21 21:15:16 by gcc              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,8 @@ OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
 
 
 all: $(NAME)
+
+bonus : all
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)

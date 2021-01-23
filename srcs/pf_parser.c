@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/21 02:25:45 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/23 01:39:51 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,16 @@ static inline void	parse_preciz_type(t_prntf *p)
 
 static void	pf_printlen(t_prntf *p)
 {
-		const int i = buffer("", 0, 0);
-	        
+	const int i = buffer("", 0, 0);
+	if (p->flags & LLONG)
+		*va_arg(p->ap, long long int*) = i; 
+	else if (p->flags & LONG)
+		*va_arg(p->ap, long*) = i;
+	else if (p->flags & CHAR)
+		*va_arg(p->ap, unsigned char*) = i; 
+	else if (p->flags & SHORT)
+		*va_arg(p->ap, short*) = i; 
+	else
 		*va_arg(p->ap, int*) = i; 
 }
 

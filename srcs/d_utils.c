@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:11:08 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/22 04:29:10 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/23 04:46:10 by gcc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,73 @@ static int	check_round(char *s, int preciz)
 	return (0);
 }
 
-
 int d_round(char *s, int preciz, int16_t pts, int16_t *info)
 {
 	const int p_save = preciz;
 	char tmp;
 
-	*info -= (pts - 1);
+	*info -= pts;
+	//printf("info = %d, pts = %d, preciz = %d\n", *info, pts, preciz);
 	if (preciz >= *info)
-		return (preciz - *info + 1);
-	preciz += pts;
+	{
+		//printf("ici ca lair ok\n");
+		return (preciz - *info++);
+	}
+	preciz += pts + 1;
+	//printf("preciz = %d\n", preciz);
+
+	tmp = *(s + preciz);
+	if (tmp > '4')
+	{
+		if (tmp > '5')
+			preciz = check_round(s, preciz);
+		else 
+			if (*info > preciz)
+				preciz = check_round(s, p_save + pts + 1);
+			else	
+			{
+				preciz -= *(s + preciz - 1) == '.' ? 2 : 1; 
+				if (*(s + preciz) % 2)
+					preciz = check_round(s, p_save + pts + 1);
+			}
+	}
+	preciz = (preciz != -1) ? 0 : -1;
+	*info = p_save;
+	*info += (*info) ? 1 : 0;
+	return (preciz);
+}
+
+int d_0round(char *s, int preciz, int16_t *info)
+{
+	const int p_save = preciz;
+	char tmp;
+
+	*info -= 1;
+	//printf("info = %d, pts = 1, preciz = %d\n", *info, preciz);
+	if (preciz > *info)
+		return (preciz - *info);
+	preciz += 1;
+	//printf("preciz = %d\n", preciz);
 	tmp = *(s + preciz);
 	if (tmp > '4')
 	{
 		if (tmp > '5')
 			preciz = check_round(s, preciz);
 		else
-			while (++preciz < *info)
+			if (*info > preciz)
+				preciz = check_round(s, p_save + 1);
+			else
 			{
-				if (*(s + preciz) > '0')
-				{
-					preciz = check_round(s, p_save + pts);
-					break ;
-				}
+				preciz -= *(s + preciz - 1) == '.' ? 2 : 1;
+
+				if (*(s + preciz) % 2)
+					preciz = check_round(s, p_save + 1);
 			}
 	}
-	else
-		preciz = 0;
-	*info = p_save + 1;
+	preciz = (preciz != -1) ? 0 : -1;
+	*info = p_save;
+	//printf(" 22 info = %d, pts = 1, preciz = %d\n", *info, preciz);
+	//*info += (*info) ? 1 : 0;
 	return (preciz);
 }
 
@@ -104,21 +143,17 @@ int16_t	mouv_pts(char *res, int16_t pts, int16_t *info)
 	return (ans);
 }
 
-void	buffer_exp(char *s, int ex, t_tuple info)
+void	buffer_exp(char *s, int ex, t_tuple info, int preciz)
 {
-	if (info.pts < 0)
-	{
-		buffer(s, info.index, 0);
-		return ;
-	}
 	if (info.pts == 0)
 	{
 		buffer(s++, 1, 0);
-		buffer(".", 1, 0);
+		if (info.index || preciz > 0)
+			buffer(".", 1, 0);
 		buffer(s, info.index, 0);
 	}
 	else if (ex > 0)
-		buffer(s, info.index + 1 , 0);
+		buffer(s, info.index + 1, 0);
 	else
 		buffer(s - ex, info.index + 1, 0);
 }
