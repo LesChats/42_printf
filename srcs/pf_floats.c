@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>			+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2021/01/18 20:05:27 by abaudot		   #+#	#+#			 */
-/*   Updated: 2021/01/23 04:40:43 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/24 22:08:39 by abaudot          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 //couper en 2 fonction 
 //utiliser retour - 1
 
-static void print(t_prntf *p, char *res, t_tuple info)
+static void print(t_prntf *p, char *res, t_tuple inf)
 {
-	const int len = info.pts + info.index;
-	p->width -= len + ((p->preciz > 0) ? p->preciz + 1 : 0);
+	p->width -= inf.pts + inf.index + ((p->preciz > 0) ? p->preciz + 1 : 0);
+	p->width -= (p->preciz == -1);
 	if (p->flags & HASH)
 		--p->width;
 	if (!(p->flags & ZERO))
@@ -34,13 +34,13 @@ static void print(t_prntf *p, char *res, t_tuple info)
 		fill_space("0000000000", p->width);
 	if (p->preciz == -1)
 		buffer("1", 1, 0);
-	buffer(res, len, 0);
+	buffer(res, inf.pts + inf.index, 0);
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
 	free(res);
 	if (p->preciz > 0)
 	{
-		if (!info.pts)
+		if (!inf.pts)
 			buffer(".", 1, 0);
 		fill_space("0000000000", p->preciz);
 	}
@@ -72,6 +72,7 @@ static void print_minus(t_prntf *p, char *res, t_tuple info)
 		fill_space("0000000000", p->preciz);
 	}
 	p->width -= len + ((p->preciz > 0) ? p->preciz + 1 : 0);
+	p->width -= (p->preciz == -1);
 	fill_space("          ", p->width);
 }
 

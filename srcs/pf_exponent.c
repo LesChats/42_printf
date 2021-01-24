@@ -6,14 +6,14 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/23 04:35:20 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/24 22:45:17 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
 #include <stdio.h>
 
-static	void ft_atoiexpon(int16_t ex)
+void	ft_atoiexpon(int16_t ex)
 {
 	char ans_arr[4];
 	uint16_t size;
@@ -39,13 +39,9 @@ static	void ft_atoiexpon(int16_t ex)
 
 static void print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 {
-//	printf("wi = %d, pre = %d, ind = %d pts = %d\n", p->width, p->preciz, info.index, info.pts); 
 	p->width -= /*(expon > 99) ?*/ (info.index + 5 + p->preciz) ;//: (info.index + 6 + p->preciz);
-//	printf("wi = %d, pre = %d, ind = %d\n", p->width, p->preciz, info.index); 
 	if (info.index || p->preciz > 0 || p->flags & HASH)
 	 	p->width--;
-	//if (p->flags & HASH)
-	//	p->width--;
 	if (p->preciz == -1)
 		p->width--;
 	else if (info.pts && info.index)
@@ -100,8 +96,8 @@ static void print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	fill_space("          ", p->width);
 }
 
-static void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
-		t_tuple *info, char *res)
+void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
+	   	t_tuple *info, char *res)
 {
 	if (info->pts == 0)
 	{
@@ -109,33 +105,24 @@ static void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
 		*preciz = d_0round(res, *preciz, &info->index);
 		if (*preciz == -1)
 		{
-		//	*(res - *ex + 2) = '0';
 			*res = '1';
 			*ex += 1;
-		//	printf("icicici %d \n",info->index);
 		}
-		return ;
 	}
 	else 
 	{
 		*ex = mouv_pts(res, info->pts, &info->index);
 		*preciz = d_round(*ex < 0 ? res - *ex : res,
 			*preciz, 1, &info->index);
-	}
-	//printf("la p = %d index = %d\n", *preciz, info->index);
-	if (*preciz == -1)
-	{
-		*(res + 1) = '0';
-		*res = '.';
-		*ex += 1;
-		info->index -= 1;
+		if (*preciz == -1)
+		{
+			*(res + 1) = '0';
+			*res = '.';
+			*ex += 1;
+			info->index -= 1;
 
+		}
 	}
-	//else if (info->pts == 0 && *preciz >= info->index)
-	//*preciz -= 1;
-	//printf("ici p = %d\n", *preciz);
-	//else if (*preciz)
-	//	++*preciz;
 }
 
 void	pf_exponent(t_prntf *p)

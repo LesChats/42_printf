@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 21:44:34 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/22 15:53:02 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/24 22:46:17 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@ void		buffer_exp(char *s, int ex, t_tuple info, int preciz);
 void		ft_sswap(char *a, char *b);
 void		nill_nan(char *ans, int len, size_t flags);
 int		d_0round(char *s, int preciz, int16_t *info);
+void    ft_atoiexpon(int16_t ex);
+void    pf_exponent_move_and_round(int *preciz, int16_t *ex,
+	   	t_tuple *info, char *res);
+void printge(t_prntf *p, char *res, int16_t expon, t_tuple info);
+void print_minusge(t_prntf *p, char *res, int16_t expon, t_tuple info);
+void printgf(t_prntf *p, char *res, t_tuple inf);
+void print_minusgf(t_prntf *p, char *res, t_tuple info);
 #endif
 
 

@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/21 02:24:50 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/24 22:53:12 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	pf_adresse(t_prntf *p);
 void	pf_floats(t_prntf *p);
 void    pf_exponent(t_prntf *p);
 void	pf_notfound(t_prntf *p);
+void    pf_gishard(t_prntf *p);
+
 /* comming soon 
 void	pf_putnbr_exp(t_prntf *p);
 */
