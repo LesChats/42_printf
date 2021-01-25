@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 21:07:14 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/25 19:10:40 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/25 19:16:25 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void printge(t_prntf *p, char *res, int16_t expon, t_tuple info)
 		p->width--;
 	else if (info.pts && info.index)
 		p->width++;
-	//	if (!(p->flags & ZERO))
-	fill_space("          ", p->width);
+	if (!(p->flags & ZERO))
+		fill_space("          ", p->width);
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)
 		buffer("+", 1, 0);
 	else if (p->flags & SPACE)
 		buffer(" ", 1, 0);
-	//	if (p->flags & ZERO)
-	//		fill_space("0000000000", p->width);
+	if (p->flags & ZERO)
+		fill_space("0000000000", p->width);
 	if (p->preciz ==  -1 && info.pts)
 		buffer("1", 1, 0);
 	buffer_exp(res, expon, info, p->preciz);
@@ -73,19 +73,18 @@ void printgf(t_prntf *p, char *res, t_tuple inf)
 {
 	p->width -= (inf.pts + inf.index) + ((p->preciz > 0) ? p->preciz + 1 : 0);
 	p->width -= (p->preciz == -1);
-	//printf("w : %d, pts : %d, ind : %d, preciz : %d\n", p->width, inf.pts, inf.index, p->preciz);
 	if (p->flags & HASH & p->flags & PRECIZ )
 		--p->width;
-	//if (!(p->flags & ZERO))
-	fill_space("          ", p->width);
+	if (!(p->flags & ZERO))
+		fill_space("          ", p->width);
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)
 		buffer("+", 1, 0);
 	else if (p->flags & SPACE)
 		buffer(" ", 1, 0);
-	//if (p->flags & ZERO)
-	//	fill_space("0000000000", p->width);
+	if (p->flags & ZERO)
+		fill_space("0000000000", p->width);
 	if (p->preciz == -1)
 		buffer("1", 1, 0);
 	buffer(res, inf.pts + inf.index, 0);
