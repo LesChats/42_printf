@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 21:07:14 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/25 17:29:06 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/25 19:10:40 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,9 @@ void print_minusge(t_prntf *p, char *res, int16_t expon, t_tuple info)
 
 void printgf(t_prntf *p, char *res, t_tuple inf)
 {
-	p->width -= inf.pts + inf.index + ((p->preciz > 0) ? p->preciz + 1 : 0);
+	p->width -= (inf.pts + inf.index) + ((p->preciz > 0) ? p->preciz + 1 : 0);
 	p->width -= (p->preciz == -1);
+	//printf("w : %d, pts : %d, ind : %d, preciz : %d\n", p->width, inf.pts, inf.index, p->preciz);
 	if (p->flags & HASH & p->flags & PRECIZ )
 		--p->width;
 	//if (!(p->flags & ZERO))

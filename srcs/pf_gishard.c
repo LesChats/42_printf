@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 11:30:53 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/25 18:41:26 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/25 19:07:42 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static void	float_type(t_prntf *p, int preciz, char *res, t_tuple n_info)
 			if (*(res + n_info.pts + n_info.index - 1) == '.')
 				--n_info.index;
 		}
+	if (!(p->flags & HASH) && p->preciz > 0)
+				p->preciz = 0;
 	 if (p->flags & MINUS)
 		return (print_minusgf(p, res, n_info));
 	printgf(p, res, n_info);
@@ -86,7 +88,11 @@ static void	exponent_type(t_prntf *p, char *res, t_tuple n_info, int16_t ex)
 				--n_info.index;
 			if (*(res + n_info.pts + n_info.index - 1) == '.')
 				--n_info.index;
+			if (p->preciz > 0)
+				p->preciz = 0;
 	}
+	if (!(p->flags & HASH) && p->preciz > 0)
+				p->preciz = 0;
 	 if (p->flags & MINUS)
 		return (print_minusge(p, res, ex, n_info));
 	printge(p, res, ex, n_info);
