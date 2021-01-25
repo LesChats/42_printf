@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 11:30:53 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/25 19:20:08 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/25 19:39:01 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,22 @@ static void	float_type(t_prntf *p, int preciz, char *res, t_tuple n_info)
 
 static void	exponent_type(t_prntf *p, char *res, t_tuple n_info, int16_t ex)
 {
+	int tmp;
+
 	if (p->preciz)
 		p->preciz -= 1;
 	if (p->preciz != 0)
 		p->flags &= ~PRECIZ; 
 	pf_exponent_move_and_round(&p->preciz, &ex, &n_info, res);
+	if (ex < 0)
+		tmp = -ex;
+	else
+		tmp = 0;
 	if (!(p->flags & HASH))
 	{
-			while (*(res + n_info.pts + n_info.index) == '0')
+			while (*(res + tmp + n_info.index) == '0')
 				--n_info.index;
-			if (*(res + n_info.pts + n_info.index) == '.')
+			if (*(res + tmp + n_info.index) == '.')
 				--n_info.index;
 			if (p->preciz > 0)
 				p->preciz = 0;
