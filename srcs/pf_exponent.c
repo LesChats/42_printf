@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/24 22:45:17 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/25 15:13:42 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
 	}
 	else 
 	{
-		*ex = mouv_pts(res, info->pts, &info->index);
+		*ex = mouv_pts(res, *preciz, info->pts, &info->index);
 		*preciz = d_round(*ex < 0 ? res - *ex : res,
 			*preciz, 1, &info->index);
 		if (*preciz == -1)
