@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 11:30:53 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/25 19:07:42 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/25 19:20:08 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	exponent_type(t_prntf *p, char *res, t_tuple n_info, int16_t ex)
 	{
 			while (*(res + n_info.pts + n_info.index) == '0')
 				--n_info.index;
-			if (*(res + n_info.pts + n_info.index - 1) == '.')
+			if (*(res + n_info.pts + n_info.index) == '.')
 				--n_info.index;
 			if (p->preciz > 0)
 				p->preciz = 0;
