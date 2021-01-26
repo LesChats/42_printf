@@ -6,20 +6,22 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:17:10 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/29 08:18:20 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/26 22:24:11 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void print(t_prntf *p, const char *num, int len)
+static void	print(t_prntf *p, const char *num, int len)
 {
+	if (p->flags & ZERO && (p->preciz = p->width))
+		p->width = 0;
 	while (p->width > 0)
 	{
 		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 		p->width -= 10;
 	}
-if (p->flags & ISNEG)
+	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)
 		buffer("+", 1, 0);
@@ -33,7 +35,7 @@ if (p->flags & ISNEG)
 	buffer(num, len, 0);
 }
 
-static void print_minus(t_prntf *p, const char *num, int len)
+static void	print_minus(t_prntf *p, const char *num, int len)
 {
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
@@ -58,10 +60,10 @@ static void	itoa_pf(unsigned long long n, t_prntf *p)
 {
 	int		i;
 	int		len;
-	char		tmp [21];
+	char	tmp[21];
 
 	i = 21;
-	if (!n) 
+	if (!n)
 		tmp[--i] = '0';
 	while (n)
 	{
@@ -79,19 +81,17 @@ static void	itoa_pf(unsigned long long n, t_prntf *p)
 	}
 	p->width -= len;
 	if (p->flags & MINUS)
-		return(print_minus(p, tmp + i, len));
-	if (p->flags & ZERO && (p->preciz = p->width))
-		p->width = 0;
+		return (print_minus(p, tmp + i, len));
 	print(p, tmp + i, len);
 }
 
-void	pf_putnbr(t_prntf *p)
+void		pf_putnbr(t_prntf *p)
 {
-	long long n;
-	unsigned long long nn;
+	long long			n;
+	unsigned long long	nn;
 
 	if (p->flags & PRECIZ)
-		p->flags &= ~ZERO; 
+		p->flags &= ~ZERO;
 	if (p->flags & CHAR)
 		n = (long long)((char)va_arg(p->ap, int));
 	else if (p->flags & SHORT)

@@ -6,16 +6,16 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 17:39:56 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 18:16:15 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/26 22:00:44 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void quick_atoi(int n)
+static void	quick_atoi(int n)
 {
 	char	tmp[10];
-	int	i;
+	int		i;
 
 	i = 10;
 	if (n > 999999999)
@@ -32,7 +32,8 @@ static void quick_atoi(int n)
 		buffer(tmp + i, 10 - i, 0);
 	}
 }
-void	pf_notfound(t_prntf *p)
+
+void		pf_notfound(t_prntf *p)
 {
 	if (*p->format)
 		buffer("%", 1, 0);
@@ -43,8 +44,7 @@ void	pf_notfound(t_prntf *p)
 		++p->format;
 		return ;
 	}
-	if (p->flags & HASH)
-		buffer("#", 1, 0);
+	(p->flags & HASH) ? buffer("#", 1, 0) : 0;
 	if (p->flags & PLUS)
 		buffer("+", 1, 0);
 	else if (p->flags & SPACE)
@@ -53,8 +53,7 @@ void	pf_notfound(t_prntf *p)
 		buffer("-", 1, 0);
 	else if (p->flags & ZERO)
 		buffer("0", 1, 0);
-	if (p->width)
-		quick_atoi(p->width);
+	(p->width) ? quick_atoi(p->width) : 0;
 	if (p->flags & PRECIZ)
 	{
 		if (!(p->flags & WILLCARD))
@@ -62,7 +61,3 @@ void	pf_notfound(t_prntf *p)
 		quick_atoi(p->preciz);
 	}
 }
-
-
-
-

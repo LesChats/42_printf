@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:34:29 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 19:09:43 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/26 22:36:19 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	puterror(t_prntf *p)
 {
 	int len;
 
-	len  = 6;
+	len = 6;
 	if ((p->flags & PRECIZ) && p->preciz < 6)
-		len = 0 ;
+		len = 0;
 	if (p->width > len)
 	{
 		if (p->flags & MINUS)
@@ -70,7 +70,7 @@ static void	add_wchar(char *dest, unsigned size, unsigned c)
 		else
 		{
 			if (size == 3)
-				tmp [0] = (char)((c >> 12 ) & 0xf) | 0xE0;
+				tmp[0] = (char)((c >> 12) & 0xf) | 0xE0;
 			else
 			{
 				tmp[0] = (char)(((c >> 18) & 7) | 0xF0);
@@ -87,13 +87,13 @@ static void	putwstr(t_prntf *p)
 {
 	t_string	str;
 	wchar_t		*s;
-	unsigned	tmp; 
+	unsigned	tmp;
 
-	if (!(s = va_arg(p->ap, wchar_t *)))	
+	if (!(s = va_arg(p->ap, wchar_t *)))
 		return (puterror(p));
-	if (!(str.s = (char *)malloc((str.size = BUFF_SZ))))
+	initializ_string(&str);
+	if (!(str.s))
 		return ;
-	str.idx = 0;
 	while (*s)
 	{
 		tmp = wcharlen(*(unsigned *)s);
@@ -112,8 +112,7 @@ static void	putwstr(t_prntf *p)
 	return (wstr_intobuffer(str.s, str.idx, p));
 }
 
-// maybe remove the 0 component from padding....`
-void	pf_putstr(t_prntf *p)
+void		pf_putstr(t_prntf *p)
 {
 	size_t		n;
 	const char	*s;

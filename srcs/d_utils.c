@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:11:08 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/25 17:13:30 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/26 15:27:04 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,24 @@ void	buffer_exp(char *s, int ex, t_tuple info, int preciz)
 		buffer(s, info.index + 1, 0);
 	else
 		buffer(s - ex, info.index + 1, 0);
+}
+
+void	nill_nan(char *ans, int len, size_t flags)
+{
+	len -= 3;
+	if (flags & MINUS)
+	{
+		if (flags & ISNEG)
+			buffer("-", 1, 0);
+		buffer(ans, 3, 0);
+		fill_space("          ", len);
+	}
+	else
+	{
+		fill_space("          ", len);
+		if (flags & ISNEG)
+			buffer("-", 1, 0);
+		buffer(ans, 3, 0);
+	}
+	free(ans);
 }

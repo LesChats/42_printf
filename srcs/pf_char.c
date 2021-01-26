@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 05:04:40 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/29 18:46:53 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/26 21:32:13 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ unsigned	wcharlen(unsigned c)
 	return (0);
 }
 
-static	void putwchar(const unsigned c, const unsigned size)
+static void	putwchar(const unsigned c, const unsigned size)
 {
 	char tmp[4];
-	
+
 	if (size == 1)
 		tmp[0] = (char)c;
 	else if (!size)
@@ -40,7 +40,7 @@ static	void putwchar(const unsigned c, const unsigned size)
 		else
 		{
 			if (size == 3)
-				tmp [0] = (char)(((c >> 12 ) & 0xf) | 0xE0);
+				tmp[0] = (char)(((c >> 12) & 0xf) | 0xE0);
 			else
 			{
 				tmp[0] = (char)(((c >> 18) & 7) | 0xF0);
@@ -53,22 +53,20 @@ static	void putwchar(const unsigned c, const unsigned size)
 	buffer(tmp, size, 0);
 }
 
-void	pf_putchar(t_prntf *p)
+void		pf_putchar(t_prntf *p)
 {
 	const unsigned	c = va_arg(p->ap, unsigned);
-	unsigned	print;
-	
-	if (p->flags & LLONG || p->flags & LONG)	
+	unsigned		print;
+
+	if (p->flags & LLONG || p->flags & LONG)
 		print = wcharlen(c);
 	else
 		print = 1;
-	if (p->width > 0)
-		--p->width;
 	if (!(p->flags & MINUS))
 	{
-		while (p->width > 0)
+		while (p->width > 1)
 		{
-			buffer("          ", (p->width > 10 ) ? 10 : p->width, 0);
+			buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 			p->width -= 10;
 		}
 		putwchar(c, print);
@@ -76,10 +74,10 @@ void	pf_putchar(t_prntf *p)
 	else
 	{
 		putwchar(c, print);
-		while (p->width > 0)
+		while (p->width > 1)
 		{
-			buffer("          ", (p->width > 10 ) ? 10 : p->width, 0);
+			buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 			p->width -= 10;
 		}
 	}
-} 
+}

@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/29 11:01:00 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/28 17:38:43 by gcc              ###   ########.fr       */
+/*   Created: 2021/01/26 15:29:29 by abaudot           #+#    #+#             */
+/*   Updated: 2021/01/26 23:24:21 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-//%[flags][width][.precision][size]type
-
-static	const char *shr_pf(const char *s)
+static const char	*shr_pf(const char *s)
 {
 	size_t		word;
 	size_t		*sss;
-	int		i;
+	int			i;
 
 	while ((size_t)s & 0b111)
 		if (*s++ == '%')
@@ -31,34 +29,27 @@ static	const char *shr_pf(const char *s)
 		word = *sss++;
 		if (((word - LOMAGIC) & (~word) & HIMAGIC) ||
 			(((word ^ PC) - LOMAGIC) & ~(word ^ PC) & HIMAGIC))
-		{		
+		{
 			s = (char *)(sss - 1);
 			i = -1;
 			while (++i < 8)
-				if (s[i] == '%')
-					return (s + i);
-				else if (!s[i])
+				if (s[i] == '%' || !s[i])
 					return (s + i);
 		}
 	}
-}	
+}
 
-int	ft_printf(const char *format, ...)
+int					ft_printf(const char *format, ...)
 {
-	t_prntf	pf;
-	const char *convertion;
-	//does I realy need format to be in a stuct ?
+	t_prntf		pf;
+	const char	*convertion;
+
 	pf.format = format;
 	va_start(pf.ap, format);
-	//maybe change the shr function for index;
 	while (*(convertion = shr_pf(pf.format)))
 	{
-		//handel some exeption after the %
 		buffer(pf.format, convertion - pf.format, 0);
 		pf.format = convertion + 1;
-		//if (!*pf.format || (*pf.format == ' ' && (!pf.format[1]
-		//|| (!pf.format[2] && pf.format[1] == 'h'))))
-		//	return (buffer("", 0, 1));
 		if (*pf.format == '%')
 		{
 			buffer("%", 1, 0);
@@ -70,3 +61,18 @@ int	ft_printf(const char *format, ...)
 	return (buffer(pf.format, ft_strlen(pf.format), 1));
 }
 
+void				pf_printlen(t_prntf *p)
+{
+	const int i = buffer("", 0, 0);
+
+	if (p->flags & LLONG)
+		*va_arg(p->ap, long long int*) = i;
+	else if (p->flags & LONG)
+		*va_arg(p->ap, long*) = i;
+	else if (p->flags & CHAR)
+		*va_arg(p->ap, unsigned char*) = i;
+	else if (p->flags & SHORT)
+		*va_arg(p->ap, short*) = i;
+	else
+		*va_arg(p->ap, int*) = i;
+}

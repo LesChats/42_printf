@@ -6,35 +6,39 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/24 22:52:33 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/26 23:57:07 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-//[flags][width][.precision][size]type
-// l ll h hh
 
-static inline void	parse_flags_width(t_prntf *p)
+static size_t			find_flags(char c)
 {
-	while (1)
+	if (c == '#')
+		return (HASH);
+	else if (c == ' ')
+		return (SPACE);
+	else if (c == '+')
+		return (PLUS);
+	else if (c == '-')
+		return (MINUS);
+	else if (c == '0')
+		return (ZERO);
+	else if (c == '*')
+		return (WILLCARD);
+	return (0);
+}
+
+static inline void		parse_flags_width(t_prntf *p)
+{
+	size_t tmp;
+
+	while ((tmp = find_flags(*p->format)))
 	{
-		if (*p->format == '#')
-			p->flags |= HASH;
-		else if (*p->format == ' ')
-			p->flags |= SPACE;
-		else if (*p->format == '+')
-			p->flags |= PLUS;
-		else if (*p->format == '-')
-			p->flags |= MINUS;
-		else if (*p->format == '0')
-			p->flags |= ZERO;
-		else if (*p->format == '*')
-			p->flags |= WILLCARD;
-		else
-			break ;
+		p->flags |= tmp;
 		++p->format;
 	}
-	if (ISNUM(*p->format))
+	if (((unsigned)(*p->format) - '0') < 10)
 		p->width = ft_atoii(&p->format);
 	if (p->flags & WILLCARD)
 		if ((p->width = (int)va_arg(p->ap, int)) < 0)
@@ -48,13 +52,13 @@ static inline void	parse_flags_width(t_prntf *p)
 		p->flags &= ~ZERO;
 }
 
-static inline void	parse_preciz_type(t_prntf *p)
+static inline void		parse_preciz_type(t_prntf *p)
 {
 	if (*p->format == '.')
 	{
 		++p->format;
 		p->flags |= PRECIZ;
-		if (ISNUM(*p->format))
+		if (((unsigned)(*p->format) - '0') < 10)
 			p->preciz = ft_atoii(&p->format);
 		if (*p->format == '*')
 		{
@@ -62,50 +66,23 @@ static inline void	parse_preciz_type(t_prntf *p)
 			if ((p->preciz = (int)va_arg(p->ap, int)) < 0)
 				p->flags &= ~PRECIZ;
 		}
-	}	
+	}
 	if (*p->format == 'h')
 	{
-		/*
-		if (*p->format == 'h' && ++p->format)
-			p->flags |= CHAR;
-		else
-			p->flags |= SHORT;
-		*/
 		++p->format;
 		p->flags |= (*p->format == 'h' && ++p->format) ? CHAR : SHORT;
 	}
 	else if (*p->format == 'l')
 	{
-		/*
-		if (*p->format == 'l' && ++p->format)
-			p->flags |= LLONG;
-		else
-			p->flags |= LONG;
-		*/
 		++p->format;
 		p->flags |= (*p->format == 'l' && ++p->format) ? LLONG : LONG;
 	}
 }
 
-static void	pf_printlen(t_prntf *p)
-{
-	const int i = buffer("", 0, 0);
-	if (p->flags & LLONG)
-		*va_arg(p->ap, long long int*) = i; 
-	else if (p->flags & LONG)
-		*va_arg(p->ap, long*) = i;
-	else if (p->flags & CHAR)
-		*va_arg(p->ap, unsigned char*) = i; 
-	else if (p->flags & SHORT)
-		*va_arg(p->ap, short*) = i; 
-	else
-		*va_arg(p->ap, int*) = i; 
-}
-
-static inline void	parse_type(t_prntf *p)
+static inline void		parse_type(t_prntf *p)
 {
 	const char c = *p->format++;
-// cdefgipsuxnX
+
 	if (c == 'c')
 		pf_putchar(p);
 	else if (c == 's')
@@ -124,14 +101,14 @@ static inline void	parse_type(t_prntf *p)
 		pf_gishard(p);
 	else if (c == 'n')
 		pf_printlen(p);
-	else 
+	else
 	{
 		--p->format;
 		pf_notfound(p);
 	}
 }
 
-void	parse(t_prntf *p)
+void					parse(t_prntf *p)
 {
 	p->flags = 0;
 	p->width = 0;
@@ -140,4 +117,3 @@ void	parse(t_prntf *p)
 	parse_preciz_type(p);
 	parse_type(p);
 }
-

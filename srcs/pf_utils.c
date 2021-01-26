@@ -6,12 +6,13 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 08:58:25 by gcc               #+#    #+#             */
-/*   Updated: 2020/12/29 19:07:05 by gcc              ###   ########.fr       */
+/*   Updated: 2021/01/26 23:25:22 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-static int end_bffr(t_bffr *bffr)
+
+static int	end_bffr(t_bffr *bffr)
 {
 	const int res = bffr->tlen;
 
@@ -21,13 +22,13 @@ static int end_bffr(t_bffr *bffr)
 	return (res);
 }
 
-int	buffer(const char *str, size_t n, const char flush)
+int			buffer(const char *str, size_t n, const char flush)
 {
 	static t_bffr	bffr;
-	size_t		diff;
+	size_t			diff;
 
 	if (n == 0)
-	{	
+	{
 		if (flush)
 			return (end_bffr(&bffr));
 		return (bffr.tlen);
@@ -42,7 +43,7 @@ int	buffer(const char *str, size_t n, const char flush)
 		write(1, bffr.bff, BUFF_SZ);
 		str += diff;
 		diff = BUFF_SZ;
-	}	
+	}
 	ft_memcpy(bffr.bff + bffr.i, str, n);
 	bffr.i += n;
 	if (flush)
@@ -50,8 +51,8 @@ int	buffer(const char *str, size_t n, const char flush)
 	return (42);
 }
 
-void	padding(int pad, const int zero)
-{ 
+void		padding(int pad, const int zero)
+{
 	if (zero)
 		while (pad > 0)
 		{
@@ -66,58 +67,9 @@ void	padding(int pad, const int zero)
 		}
 }
 
-/*
-int	add_cto_string(t_string *str, char c)
+void		initializ_string(t_string *str)
 {
-	if (str->idx == str->size)
-	{
-		str->save = str->s;
-		str->size <<= 1;
-		if (!(str->s = (char *)malloc(str->size)))
-		{
-			free(str->save);
-			return (0);
-		}
-		ft_memcpy(str->s, str->save, str->idx);
-		free(str->save);
-	}
-	str->s[str->idx++] = c;
+	str->s = (char *)malloc(BUFF_SZ);
+	str->idx = 0;
+	str->size = BUFF_SZ;
 }
-
-static int	add_to_string(t_string *str, const char *src, unsigned len)
-{
-	while (str->idx + len > str->size)
-	{
-		str->save = str->s;
-		str->size <<= 1;
-		if (!(str->s = (char *)malloc(str->size)))
-		{
-			free(str->save);
-			return (0);
-		}
-		ft_memcpy(str->s, str->save, str->idx);
-		free(str->save);
-	}
-	ft_memcpy(str->s + str->idx, src, len);
-	str->idx += len;
-}
-
-void		pf_atoi(t_string *str, uint64_t n)
-{
-	char	tmp[464];
-	int	i;
-
-	if (!n)
-		add_to_string(str, "0", 1);
-	else
-	{
-		i = 464;
-		while (n)
-		{
-			tmp[--i] = '0' + (n % 10);
-			n /= 10;
-		}
-		add_to_string(str, tmp + i, 464 - i);
-	}
-}	
-*/

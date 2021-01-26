@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/24 22:53:12 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 00:01:32 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <float.h>
-# include <limits.h>
 # include <stdint.h>
-# include <stdio.h> //debug
 
 /*
 ** defines
@@ -37,107 +34,94 @@
 # define FLAGS_LST	"#-+ 0*"
 # define HEX_U		"0123456789ABCDEF"
 # define HEX_L		"0123456789abcdef"
-# define HASH		0b1
-# define MINUS		0b10
-# define PLUS		0b100
-# define SPACE		0b1000
-# define ZERO		0b10000
-# define WILLCARD	0b100000
-# define CHAR		0b1000000
-# define LONG		0b10000000
-# define LLONG		0b100000000
-# define PRECIZ		0b1000000000
-# define UPPER		0b10000000000
-# define SHORT		0b100000000000
-# define ISNEG		0b1000000000000
-# define POINTER	0b10000000000000
+# define HASH		0x1
+# define MINUS		0x2
+# define PLUS		0x4
+# define SPACE		0x8
+# define ZERO		0x10
+# define WILLCARD	0x20
+# define CHAR		0x40
+# define LONG		0x80
+# define LLONG		0x100
+# define PRECIZ		0x200
+# define UPPER		0x400
+# define SHORT		0x600
+# define ISNEG		0x800
+# define POINTER	0x1000
+
 /*
 ** macros
 */
-
-# define ISNUM(x) (x > 47  && x < 58)
 
 /*
 ** structures
 */
 
-typedef struct		s_pflags
-{
-	size_t		flags;
-	int		width;
-	int		preciz;
-}			t_pflags;
-// metre a jour apres le premier debug
-typedef struct		s_prntf
+typedef struct	s_prntf
 {
 	size_t		flags;
 	const char	*format;
 	va_list		ap;
-	int		width;
-	int		preciz;
-}			t_prntf;
+	int			width;
+	int			preciz;
+}				t_prntf;
 
-typedef struct s_bffr
+typedef struct	s_bffr
 {
 	char	bff[BUFF_SZ];
-	int	i;
-	int	tlen;
-}		t_bffr;
+	int		i;
+	int		tlen;
+}				t_bffr;
 
-typedef	struct s_string
+typedef	struct	s_string
 {
-	size_t size;
-	size_t idx;
-	char * s;
-	char * save;
-}		t_string;
+	size_t	size;
+	size_t	idx;
+	char	*s;
+	char	*save;
+}				t_string;
 
 /*
-** Main function
+** 	Main functions
 */
 
-int	ft_printf(const char *format, ...);
-void	parse(t_prntf *p);
+int				ft_printf(const char *format, ...);
+void			parse(t_prntf *p);
 
 /*
 ** Convertions functions
 */
 
-void	pf_putchar(t_prntf *p);
-void	pf_putstr(t_prntf *p);
-void	pf_putnbr(t_prntf *p);
-void	pf_unsigned(t_prntf *p, const char c);
-void	pf_adresse(t_prntf *p);
-void	pf_floats(t_prntf *p);
-void    pf_exponent(t_prntf *p);
-void	pf_notfound(t_prntf *p);
-void    pf_gishard(t_prntf *p);
-
-/* comming soon 
-void	pf_putnbr_exp(t_prntf *p);
-*/
-
+void			pf_putchar(t_prntf *p);
+void			pf_putstr(t_prntf *p);
+void			pf_putnbr(t_prntf *p);
+void			pf_unsigned(t_prntf *p, const char c);
+void			pf_adresse(t_prntf *p);
 /*
-** because float are complicated
+** ------------- BONUS -----------------
 */
-
-//void	fill_float(t_string *str, double f, int dec_siz);
+void			pf_floats(t_prntf *p);
+void			pf_exponent(t_prntf *p);
+void			pf_notfound(t_prntf *p);
+void			pf_gishard(t_prntf *p);
+void			pf_printlen(t_prntf *p);
 
 /*
 ** Utils functions
 */
 
-int		buffer(const char *str, size_t n, const char flush);
-void		padding(int pad, const int zero);
-int		get_len(long long x, int ans);
-unsigned	wcharlen(unsigned c);
-//void		pf_atoi(t_string *str, uint64_t n);
+int				buffer(const char *str, size_t n, const char flush);
+void			padding(int pad, const int zero);
+int				get_len(long long x, int ans);
+unsigned		wcharlen(unsigned c);
+void			initializ_string(t_string *str);
+
 /*
 ** libft functions
 */
 
-size_t	ft_strlen(const char *s);
-void	*ft_memcpy(char *dest, const char *src, size_t n);
-int	ft_atoii(const char **str);
-//int	add_cto_string(t_string *str, char c);
+size_t			ft_strlen(const char *s);
+void			*ft_memcpy(char *dest, const char *src, size_t n);
+int				ft_atoii(const char **str);
+void			ft_bzero(void *s, size_t n);
 #endif

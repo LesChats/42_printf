@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/14 06:25:29 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/21 02:27:28 by abaudot          ###   ########.fr       */
+/*   Created: 2021/01/26 20:54:20 by abaudot           #+#    #+#             */
+/*   Updated: 2021/01/26 21:09:28 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 size_t					ft_strlen(const char *s)
 {
-	const char * const s_sav = s;
+	const char *const s_sav = s;
 
 	while (*s)
 		++s;
 	return ((size_t)(s - s_sav));
 }
 
-static inline void	wordcopy(size_t dstp, size_t srcp, size_t len)
+static inline void		wordcopy(size_t dstp, size_t srcp, size_t len)
 {
 	register size_t a0;
 	register size_t a1;
@@ -47,7 +47,7 @@ static inline void	wordcopy(size_t dstp, size_t srcp, size_t len)
 	}
 }
 
-void				*ft_memcpy(char *dest, const char *src, size_t n)
+void					*ft_memcpy(char *dest, const char *src, size_t n)
 {
 	size_t	dstp;
 	size_t	srcp;
@@ -68,17 +68,14 @@ void				*ft_memcpy(char *dest, const char *src, size_t n)
 	return (dest);
 }
 
-//just for quick fix, will improv this later
-int	ft_atoii(const char **str)
+int						ft_atoii(const char **str)
 {
 	unsigned char	c;
-	long int	res;
-	const char	*s; 
+	long int		res;
+	const char		*s;
 
 	s = *str;
 	res = 0;
-	if (!*s)
-		(*str)++;
 	while (*s)
 	{
 		if ((c = *s++ - '0') > 9)
@@ -90,10 +87,10 @@ int	ft_atoii(const char **str)
 	return ((int)res);
 }
 
-void    ft_bzero(void *s, size_t n)
+void					ft_bzero(void *s, size_t n)
 {
-	unsigned long   *dstp;
-	unsigned char  *dstb;
+	unsigned long	*dstp;
+	unsigned char	*dstb;
 
 	if (n >= 8)
 	{

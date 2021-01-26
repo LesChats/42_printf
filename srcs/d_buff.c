@@ -1,33 +1,32 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   d_buff.c                                           :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: abaudot <abaudot@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2021/01/17 22:35:38 by abaudot		   #+#	#+#			 */
-/*   Updated: 2021/01/20 02:06:56 by abaudot          ###   ########.fr       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/25 23:30:02 by abaudot           #+#    #+#             */
+/*   Updated: 2021/01/26 13:45:04 by abaudot          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
-#include <string.h>
-t_dbuff dbuff_init_zero()
+
+t_dbuff		dbuff_init_zero(void)
 {
 	t_dbuff res;
 
-	// ATTTENTION CHANGER PLUS TARD POUR FT !
-	memset(&res, 0, sizeof(res));
+	ft_bzero(&res, sizeof(res));
 	res.start = BIGINT_SIZE - 1;
 	res.end = 0;
 	return (res);
 }
 
-t_dbuff dbuff_init_unit(int16_t exponent)
+t_dbuff		dbuff_init_unit(int16_t exponent)
 {
 	t_dbuff res;
 
-	memset(&res, 0, sizeof(res));
+	ft_bzero(&res, sizeof(res));
 	res.val[DECIMAL_START - 1] = 1;
 	res.start = DECIMAL_START - 1;
 	res.end = res.start;
@@ -38,7 +37,7 @@ t_dbuff dbuff_init_unit(int16_t exponent)
 	return (res);
 }
 
-void	dbuff_add_right_to_left(t_dbuff *left, const t_dbuff * const right)
+void		dbuff_add_right_to_left(t_dbuff *left, const t_dbuff *const right)
 {
 	uint16_t	start;
 	uint16_t	end;
@@ -63,7 +62,7 @@ void	dbuff_add_right_to_left(t_dbuff *left, const t_dbuff * const right)
 	left->start = start;
 }
 
-void	dbuff_multiply_by_2_pow(t_dbuff *src, int16_t exponent)
+void		dbuff_multiply_by_2_pow(t_dbuff *src, int16_t exponent)
 {
 	uint16_t	i;
 
@@ -87,7 +86,7 @@ void	dbuff_multiply_by_2_pow(t_dbuff *src, int16_t exponent)
 	}
 }
 
-void   dbuff_divided_by_2_pow(t_dbuff *src, int16_t exponent)
+void		dbuff_divided_by_2_pow(t_dbuff *src, int16_t exponent)
 {
 	uint16_t	i;
 

@@ -6,17 +6,17 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 13:49:02 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/25 16:20:36 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/26 19:49:39 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
 
-static  int check_round(char *s, int preciz)
+static int	check_round(char *s, int prez)
 {
-	char * const s_sav = s - 1;
+	char *const s_sav = s - 1;
 
-	s += preciz - 1;
+	s += prez - 1;
 	while (*s == '9' && s > s_sav)
 		*s-- = '0';
 	if (*s == '.')
@@ -31,87 +31,85 @@ static  int check_round(char *s, int preciz)
 	return (0);
 }
 
-static int special_round(char *res, int preciz)
+static int	special_round(char *res, int prez)
 {
 	int tmp;
 
 	tmp = -1;
 	res += 2;
-	while (++tmp < preciz)
+	while (++tmp < prez)
 		if (*(res + tmp) != '9')
 			return (0);
-	if (*(res + preciz) > '4')
+	if (*(res + prez) > '4')
 	{
 		*(res - 2) = '.';
 		*(res - 3) = '1';
-		while (preciz > -2)
-			*(res + preciz--) = '0';
+		while (prez > -2)
+			*(res + prez--) = '0';
 		return (1);
 	}
 	return (0);
 }
 
-int d_0round(char *s, int preciz, int16_t *info)
+int			d_0round(char *s, int prez, int16_t *info)
 {
-	const int p_save = preciz;
-	char tmp;
+	const int	p_sv = prez;
+	char		tmp;
 
-	*info -= 1;
-	if (preciz > *info)
-		return (preciz - *info);
-	preciz += 1;
-	tmp = *(s + preciz);
+	if (prez >= *info)
+		return (prez - *info);
+	prez += 1;
+	tmp = *(s + prez);
 	if (tmp > '4')
 	{
 		if (tmp > '5')
-			preciz = check_round(s, preciz);
+			prez = check_round(s, prez);
 		else
-			if (*info > preciz)
-				preciz = check_round(s, p_save + 1);
+		{
+			if (*info > prez)
+				prez = check_round(s, p_sv + 1);
 			else
 			{
-				preciz -= *(s + preciz - 1) == '.' ? 2 : 1;
-
-				if (*(s + preciz) % 2)
-					preciz = check_round(s, p_save + 1);
+				prez -= 1;
+				prez = (*(s + prez) % 2) ? check_round(s, p_sv + 1) : 0;
 			}
+		}
 	}
-	preciz = (preciz != -1) ? 0 : -1;
-	*info = p_save;
-	return (preciz);
+	prez = (prez != -1) ? 0 : -1;
+	*info = p_sv;
+	return (prez);
 }
 
-int d_round(char *s, int preciz, int16_t pts, int16_t *info)
+int			d_round(char *s, int prez, int16_t pts, int16_t *info)
 {
-	const int p_save = preciz;
-	char tmp;
+	const int	p_sv = prez;
+	const char	tmp = *(s + prez + pts + 1);
 
 	*info -= pts;
-	if (preciz >= *info)
-		return (preciz - *info++);
-	preciz += pts + 1;
-	tmp = *(s + preciz);
+	if (prez >= *info)
+		return (prez - *info++ + 1);
+	prez += pts + 1;
 	if (tmp > '4')
 	{
 		if (tmp > '5')
-			preciz = check_round(s, preciz);
+			prez = check_round(s, prez);
 		else
-			if (*info > preciz)
-				preciz = check_round(s, p_save + pts + 1);
+		{
+			if (*info > prez)
+				prez = check_round(s, p_sv + pts + 1);
 			else
 			{
-				preciz -= *(s + preciz - 1) == '.' ? 2 : 1;
-				if (*(s + preciz) % 2)
-					preciz = check_round(s, p_save + pts + 1);
+				prez -= *(s + prez - 1) == '.' ? 2 : 1;
+				prez = (*(s + prez) % 2) ? check_round(s, p_sv + pts + 1) : 0;
 			}
+		}
 	}
-	preciz = (preciz != -1) ? 0 : -1;
-	*info = p_save;
-	*info += (*info) ? 1 : 0;
-	return (preciz);
+	prez = (prez != -1) ? 0 : -1;
+	*info = p_sv + (p_sv > 0);
+	return (prez);
 }
 
-int16_t mouv_pts(char *res, int preciz, int16_t pts, int16_t *info)
+int16_t		mouv_pts(char *res, int prez, int16_t pts, int16_t *info)
 {
 	uint16_t ans;
 
@@ -133,7 +131,7 @@ int16_t mouv_pts(char *res, int preciz, int16_t pts, int16_t *info)
 		*res = *(res + 1);
 		*(res + 1) = '.';
 		if (*res == '9')
-			ans += special_round(res, preciz);
+			ans += special_round(res, prez);
 		*info += ans;
 	}
 	return (ans);

@@ -6,20 +6,20 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/25 15:13:42 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/26 21:45:02 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
 #include <stdio.h>
 
-void	ft_atoiexpon(int16_t ex)
+void		ft_atoiexpon(int16_t ex)
 {
-	char ans_arr[4];
-	uint16_t size;
+	char		ans_arr[4];
+	uint16_t	size;
 
 	if (ex >= 0)
-	{ 
+	{
 		if (ex < 10)
 			buffer("e+0", 3, 0);
 		else
@@ -37,15 +37,12 @@ void	ft_atoiexpon(int16_t ex)
 	buffer(ans_arr, size, 0);
 }
 
-static void print(t_prntf *p, char *res, int16_t expon, t_tuple info)
+static void	print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 {
-	p->width -= /*(expon > 99) ?*/ (info.index + 5 + p->preciz) ;//: (info.index + 6 + p->preciz);
-	if (info.index || p->preciz > 0 || p->flags & HASH)
-	 	p->width--;
+	p->width -= (info.index + 5 + p->preciz);
+	p->width -= ((info.index && !info.pts) || p->flags & HASH);
 	if (p->preciz == -1)
-		p->width--;
-	else if (info.pts && info.index)
-		p->width++;	
+		p->width -= 1 + (info.pts > 0);
 	if (!(p->flags & ZERO))
 		fill_space("          ", p->width);
 	if (p->flags & ISNEG)
@@ -56,7 +53,7 @@ static void print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 		buffer(" ", 1, 0);
 	if (p->flags & ZERO)
 		fill_space("0000000000", p->width);
-	if (p->preciz ==  -1 && info.pts)
+	if (p->preciz == -1 && info.pts)
 		buffer("1", 1, 0);
 	buffer_exp(res, expon, info, p->preciz);
 	if (p->flags & HASH)
@@ -67,21 +64,20 @@ static void print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	ft_atoiexpon(expon);
 }
 
-static void print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
+static void	print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 {
-
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)
 		buffer("+", 1, 0);
 	else if (p->flags & SPACE)
 		buffer(" ", 1, 0);
-	if (p->preciz ==  -1 && info.pts)
-		buffer("1", 1, 0);
 	if (p->preciz == -1)
-		p->width--;	
-	else if (info.pts && info.index)
-		p->width++;	
+	{
+		if (info.pts)
+			buffer("1", 1, 0);
+		p->width -= 1 + (info.pts > 0);
+	}
 	buffer_exp(res, expon, info, p->preciz);
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
@@ -89,19 +85,18 @@ static void print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	if (p->preciz > 0)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
-	p->width -= info.index + 5 + p->preciz;
-	if (info.index || p->preciz > 0 || p->flags & HASH)
-	 	p->width--;	
-	//padding(p->width, p->flags & ZERO);
+	p->width -= (info.index + 5 + p->preciz);
+	p->width -= ((info.index && !info.pts) || p->flags & HASH);
 	fill_space("          ", p->width);
 }
 
-void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
-	   	t_tuple *info, char *res)
+void		pf_exponent_move_and_round(int *preciz, int16_t *ex,
+		t_tuple *info, char *res)
 {
 	if (info->pts == 0)
 	{
 		*ex = info->index - 1;
+		info->index -= 1;
 		*preciz = d_0round(res, *preciz, &info->index);
 		if (*preciz == -1)
 		{
@@ -109,7 +104,7 @@ void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
 			*ex += 1;
 		}
 	}
-	else 
+	else
 	{
 		*ex = mouv_pts(res, *preciz, info->pts, &info->index);
 		*preciz = d_round(*ex < 0 ? res - *ex : res,
@@ -120,20 +115,18 @@ void	pf_exponent_move_and_round(int *preciz, int16_t *ex,
 			*res = '.';
 			*ex += 1;
 			info->index -= 1;
-
 		}
 	}
 }
 
-void	pf_exponent(t_prntf *p)
+void		pf_exponent(t_prntf *p)
 {
 	double	n;
 	char	*res;
 	t_tuple	n_info;
 	int16_t	ex;
 
-	if (!(p->flags & PRECIZ))
-		p->preciz = 6;
+	p->preciz = (p->flags & PRECIZ) ? p->preciz : 6;
 	if (p->preciz != 0)
 		p->flags &= ~HASH;
 	n = va_arg(p->ap, double);
@@ -145,8 +138,7 @@ void	pf_exponent(t_prntf *p)
 	}
 	else if (p->flags & PLUS || p->flags & SPACE)
 		--p->width;
-	n_info = udtoa(n, &res);
-	if (n_info.index == -1)
+	if ((n_info = udtoa(n, &res)).index == -1)
 		return ;
 	if (n_info.pts == -1)
 		return (nill_nan(res, p->width, p->flags));
