@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 13:49:02 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/26 19:49:39 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 03:29:13 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			d_0round(char *s, int prez, int16_t *info)
 	char		tmp;
 
 	if (prez >= *info)
-		return (prez - *info);
+		return (prez - --*info);
 	prez += 1;
 	tmp = *(s + prez);
 	if (tmp > '4')
@@ -87,7 +87,7 @@ int			d_round(char *s, int prez, int16_t pts, int16_t *info)
 
 	*info -= pts;
 	if (prez >= *info)
-		return (prez - *info++ + 1);
+		return (prez - *info++);
 	prez += pts + 1;
 	if (tmp > '4')
 	{
@@ -105,7 +105,7 @@ int			d_round(char *s, int prez, int16_t pts, int16_t *info)
 		}
 	}
 	prez = (prez != -1) ? 0 : -1;
-	*info = p_sv + (p_sv > 0);
+	*info = p_sv + (p_sv != 0);
 	return (prez);
 }
 

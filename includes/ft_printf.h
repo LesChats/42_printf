@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/27 00:01:32 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 01:15:39 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@
 # define LLONG		0x100
 # define PRECIZ		0x200
 # define UPPER		0x400
-# define SHORT		0x600
-# define ISNEG		0x800
-# define POINTER	0x1000
+# define SHORT		0x800
+# define ISNEG		0x1000
+# define POINTER	0x2000
 
 /*
 ** macros

@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/26 21:45:02 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 03:57:20 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ void		ft_atoiexpon(int16_t ex)
 static void	print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 {
 	p->width -= (info.index + 5 + p->preciz);
-	p->width -= ((info.index && !info.pts) || p->flags & HASH);
+	p->width -= (p->flags & HASH || p->preciz > 0 || info.index);
 	if (p->preciz == -1)
-		p->width -= 1 + (info.pts > 0);
+		p->width -= 1;
+	else if (info.pts && info.index)
+		++p->width;
 	if (!(p->flags & ZERO))
 		fill_space("          ", p->width);
 	if (p->flags & ISNEG)
@@ -76,8 +78,10 @@ static void	print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	{
 		if (info.pts)
 			buffer("1", 1, 0);
-		p->width -= 1 + (info.pts > 0);
+		p->width -= 1;
 	}
+	else if (info.pts && info.index)
+		++p->width;
 	buffer_exp(res, expon, info, p->preciz);
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
@@ -85,8 +89,8 @@ static void	print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	if (p->preciz > 0)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
-	p->width -= (info.index + 5 + p->preciz);
-	p->width -= ((info.index && !info.pts) || p->flags & HASH);
+	p->width -= info.index + 5 + p->preciz;
+	p->width -= (p->flags & HASH || p->preciz > 0 || info.index);// - (p->preciz > 0);
 	fill_space("          ", p->width);
 }
 
@@ -96,7 +100,6 @@ void		pf_exponent_move_and_round(int *preciz, int16_t *ex,
 	if (info->pts == 0)
 	{
 		*ex = info->index - 1;
-		info->index -= 1;
 		*preciz = d_0round(res, *preciz, &info->index);
 		if (*preciz == -1)
 		{

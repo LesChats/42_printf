@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 05:04:40 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/26 21:32:13 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 01:08:42 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ void		pf_putchar(t_prntf *p)
 	const unsigned	c = va_arg(p->ap, unsigned);
 	unsigned		print;
 
-	if (p->flags & LLONG || p->flags & LONG)
-		print = wcharlen(c);
-	else
-		print = 1;
+	print = (p->flags & LLONG || p->flags & LONG) ? wcharlen(c) : 1;
+	--p->width;
 	if (!(p->flags & MINUS))
 	{
-		while (p->width > 1)
+		while (p->width > 0)
 		{
 			buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 			p->width -= 10;
@@ -74,7 +72,7 @@ void		pf_putchar(t_prntf *p)
 	else
 	{
 		putwchar(c, print);
-		while (p->width > 1)
+		while (p->width > 0)
 		{
 			buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 			p->width -= 10;

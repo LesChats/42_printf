@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 14:59:04 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/26 19:54:21 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 02:04:39 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	print(t_prntf *p, char *res, t_tuple inf)
 {
-	p->width -= inf.pts + inf.index + ((p->preciz > 0) ? p->preciz : 0);
-	p->width -= ((p->preciz == -1) + (p->flags & HASH));
+	p->width -= inf.pts + inf.index + p->preciz + 1;
+	p->width -= ((p->preciz == -1) + (p->flags & HASH)) - (p->preciz == 0);
 	if (!(p->flags & ZERO))
 		fill_space("          ", p->width);
 	if (p->flags & ISNEG)
@@ -36,7 +36,7 @@ static void	print(t_prntf *p, char *res, t_tuple inf)
 	{
 		if (!inf.pts)
 			buffer(".", 1, 0);
-		fill_space("0000000000", p->preciz);
+		fill_space("0000000000", p->preciz + (inf.pts > 0));
 	}
 }
 
@@ -63,9 +63,9 @@ static void	print_minus(t_prntf *p, char *res, t_tuple info)
 	{
 		if (!info.pts)
 			buffer(".", 1, 0);
-		fill_space("0000000000", p->preciz);
+		fill_space("0000000000", p->preciz + (info.pts > 0));
 	}
-	p->width -= (l + ((p->preciz > 0) ? p->preciz : 0) + (p->preciz < 0));
+	p->width -= l + p->preciz + 1 + (p->preciz == -1) - (p->preciz == 0);
 	fill_space("          ", p->width);
 }
 

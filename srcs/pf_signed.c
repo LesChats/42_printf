@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:17:10 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/26 22:24:11 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 01:23:35 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 static void	print(t_prntf *p, const char *num, int len)
 {
-	if (p->flags & ZERO && (p->preciz = p->width))
-		p->width = 0;
-	while (p->width > 0)
-	{
-		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
-		p->width -= 10;
-	}
+	if (!(p->flags & ZERO && (p->preciz = p->width)))
+		while (p->width > 0)
+		{
+			buffer("          ", (p->width > 10) ? 10 : p->width, 0);
+			p->width -= 10;
+		}
 	if (p->flags & ISNEG)
 		buffer("-", 1, 0);
 	else if (p->flags & PLUS)
