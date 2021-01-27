@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/27 03:57:20 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 15:45:02 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
 	p->width -= info.index + 5 + p->preciz;
-	p->width -= (p->flags & HASH || p->preciz > 0 || info.index);// - (p->preciz > 0);
+	p->width -= (p->flags & HASH || p->preciz > 0 || info.index);
 	fill_space("          ", p->width);
 }
 

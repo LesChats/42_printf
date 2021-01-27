@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 06:29:28 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/27 00:33:24 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 16:57:50 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static void		uprint(t_prntf *p, const char *num, int len)
 		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 		p->width -= 10;
 	}
-	if (p->flags & POINTER)
-	{
-		(p->flags & PLUS) ? buffer("+", 1, 0) : 0;
-		(p->flags & SPACE) ? buffer(" ", 1, 0) : 0;
-	}
+	//if (p->flags & POINTER)
+//	{
+//		(p->flags & PLUS) ? buffer("+", 1, 0) : 0;
+//		(p->flags & SPACE) ? buffer(" ", 1, 0) : 0;
+//	}
 	if (p->flags & HASH)
 		(p->flags & UPPER) ? buffer("0X", 2, 0) : buffer("0x", 2, 0);
 	while (p->preciz > 0)
@@ -40,11 +40,6 @@ static void		uprint(t_prntf *p, const char *num, int len)
 static void		uprint_min(t_prntf *p, const char *num, int len)
 {
 	p->width -= len;
-	if (p->flags & POINTER)
-	{
-		(p->flags & PLUS) ? buffer("+", 1, 0) : 0;
-		(p->flags & SPACE) ? buffer(" ", 1, 0) : 0;
-	}
 	if (p->flags & HASH)
 	{
 		p->width -= 2;
@@ -99,19 +94,16 @@ void			pf_adresse(t_prntf *p)
 
 	if (!(ptr = va_arg(p->ap, void *)))
 	{
-		p->preciz = 0;
+		if (!(p->flags & PRECIZ))
+			p->preciz = 1;
+		p->width -= preciz + 2;
 		if (p->flags & MINUS)
-			uprint_min(p, "(nil)", 5);
+			uprint_minnull(p);
 		else
-			uprint(p, "(nil)", 5);
+			uprintnull(p);
 		return ;
 	}
 	p->flags |= HASH;
-	p->flags |= POINTER;
-	if (p->flags & PRECIZ)
-		p->flags &= ~ZERO;
-	if (p->flags & PLUS || p->flags & SPACE)
-		--p->width;
 	itoa_base(p, (unsigned long long)ptr, 16);
 }
 

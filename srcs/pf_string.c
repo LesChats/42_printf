@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:34:29 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/26 22:36:19 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 16:06:12 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ static void	puterror(t_prntf *p)
 
 	len = 6;
 	if ((p->flags & PRECIZ) && p->preciz < 6)
-		len = 0;
+		len = p->preciz;
 	if (p->width > len)
 	{
 		if (p->flags & MINUS)
 		{
 			buffer("(null)", len, 0);
-			padding(p->width - len, 0);
+			padding(p->width - len, p->flags & ZERO);
 			return ;
 		}
-		padding(p->width - len, 0);
+		padding(p->width - len, p->flags & ZERO);
 	}
 	buffer("(null)", len, 0);
 }
