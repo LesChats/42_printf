@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 06:29:28 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/27 16:57:50 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 17:09:16 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ void			pf_adresse(t_prntf *p)
 	{
 		if (!(p->flags & PRECIZ))
 			p->preciz = 1;
-		p->width -= preciz + 2;
+		p->width -= p->preciz + 2;
 		if (p->flags & MINUS)
 			uprint_minnull(p);
 		else
-			uprintnull(p);
+			uprint_null(p);
 		return ;
 	}
 	p->flags |= HASH;

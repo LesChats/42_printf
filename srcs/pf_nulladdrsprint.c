@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 16:40:17 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/27 17:01:53 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 17:09:25 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ void	uprint_minnull(t_prntf *p)
 		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 		p->width -= 10;
 	}
-	return ();
 }
 
