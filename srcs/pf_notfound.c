@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 17:39:56 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/26 22:00:44 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 13:55:57 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,27 @@ static void	quick_atoi(int n)
 	}
 }
 
-void		pf_notfound(t_prntf *p)
+static void	p_c(t_prntf *p)
 {
-	if (*p->format)
-		buffer("%", 1, 0);
-	else
-		return ;
-	if (*p->format == '%')
+	if (p->flags & MINUS)
 	{
+		buffer("%", 1, 0);
+		padding(p->width - 1 , 0);
 		++p->format;
 		return ;
 	}
+	padding(p->width - 1, p->flags & ZERO);
+	buffer("%", 1, 0);
+	++p->format;
+}
+
+void		pf_notfound(t_prntf *p)
+{
+	if (!*p->format)
+		return ;
+	if (*p->format == '%')
+		return (p_c(p));
+	buffer("%", 1, 0);
 	(p->flags & HASH) ? buffer("#", 1, 0) : 0;
 	if (p->flags & PLUS)
 		buffer("+", 1, 0);

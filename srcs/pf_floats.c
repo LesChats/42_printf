@@ -6,11 +6,12 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 14:59:04 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/27 02:04:39 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 17:06:21 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
+#include <stdio.h>
 
 static void	print(t_prntf *p, char *res, t_tuple inf)
 {
@@ -32,7 +33,7 @@ static void	print(t_prntf *p, char *res, t_tuple inf)
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
 	free(res);
-	if (p->preciz > 0)
+	if (p->preciz > 0 || p->flags & LAST)
 	{
 		if (!inf.pts)
 			buffer(".", 1, 0);
@@ -59,7 +60,7 @@ static void	print_minus(t_prntf *p, char *res, t_tuple info)
 		--p->width;
 	}
 	free(res);
-	if (p->preciz > 0)
+	if (p->preciz > 0 || p->flags & LAST)
 	{
 		if (!info.pts)
 			buffer(".", 1, 0);
@@ -92,7 +93,7 @@ void		pf_floats(t_prntf *p)
 	if (n_info.pts == -1)
 		return (nill_nan(res, p->width, p->flags));
 	if (n_info.pts)
-		p->preciz = d_round(res, p->preciz, n_info.pts, &n_info.index);
+		p->preciz = d_round(res, &p->flags, p->preciz, &n_info);
 	if (p->flags & MINUS)
 		return (print_minus(p, res, n_info));
 	print(p, res, n_info);

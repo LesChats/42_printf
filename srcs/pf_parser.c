@@ -6,38 +6,39 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/26 23:57:07 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 13:10:28 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static size_t			find_flags(char c)
+static void			find_flags(const char **s, size_t *flags)
 {
-	if (c == '#')
-		return (HASH);
-	else if (c == ' ')
-		return (SPACE);
-	else if (c == '+')
-		return (PLUS);
-	else if (c == '-')
-		return (MINUS);
-	else if (c == '0')
-		return (ZERO);
-	else if (c == '*')
-		return (WILLCARD);
-	return (0);
+	while (1)
+	{
+		if ((unsigned)(**s)  - ' ' > 16)
+			return ;
+	if (**s == '#')
+		*flags |= HASH;
+	else if (**s == ' ')
+		*flags |= SPACE;
+	else if (**s == '+')
+		*flags |= PLUS;
+	else if (**s == '-')
+		*flags |= MINUS;
+	else if (**s == '0')
+		*flags |= ZERO;
+	else if (**s == '*')
+		*flags |= WILLCARD;
+	else 
+		return ;
+	(*s)++;
+	}
 }
 
 static inline void		parse_flags_width(t_prntf *p)
 {
-	size_t tmp;
-
-	while ((tmp = find_flags(*p->format)))
-	{
-		p->flags |= tmp;
-		++p->format;
-	}
+	find_flags(&p->format, &p->flags);
 	if (((unsigned)(*p->format) - '0') < 10)
 		p->width = ft_atoii(&p->format);
 	if (p->flags & WILLCARD)
@@ -46,6 +47,7 @@ static inline void		parse_flags_width(t_prntf *p)
 			p->flags |= MINUS;
 			p->width = -p->width;
 		}
+	find_flags(&p->format, &p->flags);
 	if (p->flags & PLUS)
 		p->flags &= ~SPACE;
 	if (p->flags & MINUS)

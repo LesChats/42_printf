@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   pf_unsigned.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/17 06:29:28 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/27 17:09:16 by abaudot          ###   ########.fr       */
+/*   Created: 2021/01/28 12:41:05 by abaudot           #+#    #+#             */
+/*   Updated: 2021/01/28 13:08:02 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 static void		uprint(t_prntf *p, const char *num, int len)
 {
 	p->width -= (p->flags & HASH) ? len + 2 : len;
-	if (p->flags & ZERO && (p->preciz = p->width))
-		p->width = 0;
+	if (p->flags & ZERO && p->width > 0 && !(p->flags & PRECIZ))
+	{
+			p->preciz += p->width;
+			p->width = 0;
+	}
 	while (p->width > 0)
 	{
 		buffer("          ", (p->width > 10) ? 10 : p->width, 0);
 		p->width -= 10;
 	}
-	//if (p->flags & POINTER)
-//	{
-//		(p->flags & PLUS) ? buffer("+", 1, 0) : 0;
-//		(p->flags & SPACE) ? buffer(" ", 1, 0) : 0;
-//	}
 	if (p->flags & HASH)
 		(p->flags & UPPER) ? buffer("0X", 2, 0) : buffer("0x", 2, 0);
 	while (p->preciz > 0)
@@ -92,18 +91,18 @@ void			pf_adresse(t_prntf *p)
 {
 	void *ptr;
 
+	p->flags |= HASH;
 	if (!(ptr = va_arg(p->ap, void *)))
 	{
 		if (!(p->flags & PRECIZ))
 			p->preciz = 1;
-		p->width -= p->preciz + 2;
+		p->width -= p->preciz;
 		if (p->flags & MINUS)
-			uprint_minnull(p);
+			uprint_min(p, "", 0);
 		else
-			uprint_null(p);
+			uprint(p, "", 0);
 		return ;
 	}
-	p->flags |= HASH;
 	itoa_base(p, (unsigned long long)ptr, 16);
 }
 

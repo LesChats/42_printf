@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/27 17:08:08 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 16:34:20 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@
 # define UPPER		0x400
 # define SHORT		0x800
 # define ISNEG		0x1000
-# define POINTER	0x2000
-
+# define LAST		0x2000
 /*
 ** macros
 */
@@ -115,8 +114,6 @@ void			padding(int pad, const int zero);
 int				get_len(long long x, int ans);
 unsigned		wcharlen(unsigned c);
 void			initializ_string(t_string *str);
-void    uprint_null(t_prntf *p);
-void    uprint_minnull(t_prntf *p);
 /*
 ** libft functions
 */
