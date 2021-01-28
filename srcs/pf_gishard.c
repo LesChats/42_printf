@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:47:45 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 16:19:23 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 20:05:06 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ static void		float_type(t_prntf *p, int preciz, char *res, t_tuple n_info)
 	if (preciz != 0)
 		p->flags &= ~PRECIZ;
 	if (n_info.pts)
-		p->preciz = d_round(res, &p->flags, preciz, &n_info);
+		p->preciz = d_round(res, preciz, n_info.pts, &n_info.index);
 	else
 		p->preciz = preciz;
 	if (n_info.pts)
 		if (!(p->flags & HASH))
 		{
-			while (*(res + n_info.pts + n_info.index - 1) == '0')
+			while (*(res + n_info.pts + n_info.index) == '0')
 				--n_info.index;
-			if (*(res + n_info.pts + n_info.index - 1) == '.')
+			if (*(res + n_info.pts + n_info.index) == '.')
 				--n_info.index;
 		}
 	if (!(p->flags & HASH) && p->preciz > 0)
@@ -78,8 +78,8 @@ static void		exponent_type(t_prntf *p, char *res, t_tuple n_info, int16_t ex)
 	p->preciz -= (p->preciz != 0);
 	if (p->preciz != 0)
 		p->flags &= ~PRECIZ;
-	pf_exponent_move_and_round(p, &ex, &n_info, res);
-	tmp = (ex < 0) ? -ex : 0;
+	pf_exponent_move_and_round(&p->preciz, &ex, &n_info, res);
+	tmp = (ex < 0) ? (-ex + 1) : 0;
 	if (!(p->flags & HASH))
 	{
 		while (*(res + tmp + n_info.index) == '0')

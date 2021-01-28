@@ -6,12 +6,11 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 13:49:02 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 16:36:54 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 20:04:03 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
-#include <stdio.h>
 
 static int	check_round(char *s, int prez)
 {
@@ -67,7 +66,7 @@ int			d_0round(char *s, int prez, int16_t *info)
 			prez = check_round(s, prez);
 		else
 		{
-			if (*info > prez)
+			if (*info > prez + 1)
 				prez = check_round(s, p_sv + 1);
 			else
 			{
@@ -81,32 +80,32 @@ int			d_0round(char *s, int prez, int16_t *info)
 	return (prez);
 }
 
-int			d_round(char *s, size_t *flags, int prez, t_tuple *t)
+int			d_round(char *s, int prez, int16_t pts, int16_t *info)
 {
 	const int	p_sv = prez;
+	const char	tmp = *(s + prez + pts + 1);
 
-	t->index -= t->pts;
-	(t->index == prez) ? *flags |= LAST : 0;
-	if (prez >= t->index)
-		return (prez - t->index++);
-	prez += t->pts + 1;
-	if (*(s + prez) > '4')
+	*info -= pts;
+	if (prez >= *info)
+		return (prez - *info);
+	prez += pts + 1;
+	if (tmp > '4')
 	{
-		if (*(s + prez) > '5')
+		if (tmp > '5')
 			prez = check_round(s, prez);
 		else
 		{
-			if (t->index > prez)
-				prez = check_round(s, p_sv + t->pts + 1);
+			if (*info > prez)
+				prez = check_round(s, p_sv + pts + 1);
 			else
 			{
 				prez -= *(s + prez - 1) == '.' ? 2 : 1;
-				prez = (*(s + prez) % 2) ? check_round(s, p_sv + t->pts + 1) : 0;
+				prez = (*(s + prez) % 2) ? check_round(s, p_sv + pts + 1) : 0;
 			}
 		}
 	}
 	prez = (prez != -1) ? 0 : -1;
-	t->index = p_sv + (p_sv != 0);
+	*info = p_sv;
 	return (prez);
 }
 

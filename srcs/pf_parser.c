@@ -6,33 +6,33 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 12:47:21 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/28 13:10:28 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 20:05:52 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void			find_flags(const char **s, size_t *flags)
+static void				find_flags(const char **s, size_t *flags)
 {
 	while (1)
 	{
-		if ((unsigned)(**s)  - ' ' > 16)
+		if ((unsigned)(**s) - ' ' > 16)
 			return ;
-	if (**s == '#')
-		*flags |= HASH;
-	else if (**s == ' ')
-		*flags |= SPACE;
-	else if (**s == '+')
-		*flags |= PLUS;
-	else if (**s == '-')
-		*flags |= MINUS;
-	else if (**s == '0')
-		*flags |= ZERO;
-	else if (**s == '*')
-		*flags |= WILLCARD;
-	else 
-		return ;
-	(*s)++;
+		if (**s == '#')
+			*flags |= HASH;
+		else if (**s == ' ')
+			*flags |= SPACE;
+		else if (**s == '+')
+			*flags |= PLUS;
+		else if (**s == '-')
+			*flags |= MINUS;
+		else if (**s == '0')
+			*flags |= ZERO;
+		else if (**s == '*')
+			*flags |= WILLCARD;
+		else
+			return ;
+		(*s)++;
 	}
 }
 

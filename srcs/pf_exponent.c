@@ -6,12 +6,11 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 16:55:08 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 19:59:45 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dtoa.h"
-#include <stdio.h>
 
 void		ft_atoiexpon(int16_t ex)
 {
@@ -39,7 +38,7 @@ void		ft_atoiexpon(int16_t ex)
 
 static void	print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 {
-	p->width -= (info.index + 5 + p->preciz);
+	p->width -= (info.index + 5 + p->preciz + (info.pts > 0));
 	p->width -= (p->flags & HASH || p->preciz > 0 || info.index);
 	if (p->preciz == -1)
 		p->width -= 1;
@@ -61,8 +60,8 @@ static void	print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
 	free(res);
-	if (p->preciz > 0 || p->flags & LAST)
-		fill_space("0000000000", p->preciz + !(p->preciz));
+	if (p->preciz > 0)
+		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
 }
 
@@ -86,24 +85,22 @@ static void	print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
 	free(res);
-	if (p->preciz > 0 || p->flags & LAST)
-		fill_space("0000000000", p->preciz + !(p->preciz));
+	if (p->preciz > 0)
+		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
-	p->width -= info.index + 5 + p->preciz;
+	p->width -= info.index + 5 + p->preciz + (info.pts > 0);
 	p->width -= (p->flags & HASH || p->preciz > 0 || info.index);
 	fill_space("          ", p->width);
 }
 
-void		pf_exponent_move_and_round(t_prntf *p, int16_t *ex,
+void		pf_exponent_move_and_round(int *preciz, int16_t *ex,
 		t_tuple *info, char *res)
 {
-	const int16_t pts = info->pts;
-
 	if (info->pts == 0)
 	{
 		*ex = info->index - 1;
-		p->preciz = d_0round(res, p->preciz, &info->index);
-		if (p->preciz == -1)
+		*preciz = d_0round(res, *preciz, &info->index);
+		if (*preciz == -1)
 		{
 			*res = '1';
 			*ex += 1;
@@ -111,12 +108,10 @@ void		pf_exponent_move_and_round(t_prntf *p, int16_t *ex,
 	}
 	else
 	{
-		*ex = mouv_pts(res, p->preciz, info->pts, &info->index);
-		info->pts = 1;
-		p->preciz = d_round(*ex < 0 ? res - *ex : res,
-			   	&p->flags, p->preciz, info);
-		info->pts = pts;
-		if (p->preciz == -1)
+		*ex = mouv_pts(res, *preciz, info->pts, &info->index);
+		*preciz = d_round(*ex < 0 ? res - *ex : res,
+			*preciz, 1, &info->index);
+		if (*preciz == -1)
 		{
 			*(res + 1) = '0';
 			*res = '.';
@@ -149,7 +144,7 @@ void		pf_exponent(t_prntf *p)
 		return ;
 	if (n_info.pts == -1)
 		return (nill_nan(res, p->width, p->flags));
-	pf_exponent_move_and_round(p, &ex, &n_info, res);
+	pf_exponent_move_and_round(&p->preciz, &ex, &n_info, res);
 	if (p->flags & MINUS)
 		return (print_minus(p, res, ex, n_info));
 	print(p, res, ex, n_info);

@@ -6,7 +6,7 @@
 /*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 17:39:56 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/28 13:55:57 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 20:01:19 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	p_c(t_prntf *p)
 	if (p->flags & MINUS)
 	{
 		buffer("%", 1, 0);
-		padding(p->width - 1 , 0);
+		padding(p->width - 1, 0);
 		++p->format;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:41:05 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 13:08:02 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 20:02:55 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void		uprint(t_prntf *p, const char *num, int len)
 	p->width -= (p->flags & HASH) ? len + 2 : len;
 	if (p->flags & ZERO && p->width > 0 && !(p->flags & PRECIZ))
 	{
-			p->preciz += p->width;
-			p->width = 0;
+		p->preciz += p->width;
+		p->width = 0;
 	}
 	while (p->width > 0)
 	{

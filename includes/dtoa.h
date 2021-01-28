@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 00:04:10 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 16:21:02 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/27 00:29:49 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ char			*ft_strdup(char *src, int len);
 **		handel rounding on string
 */
 
-int				d_round(char *s, size_t *flags, int preciz, t_tuple *t);
+int				d_round(char *s, int preciz, int16_t pts, int16_t *info);
 int				d_0round(char *s, int preciz, int16_t *info);
 void			fill_space(char *filler, int size);
 /*
 **			for %e
 */
 int16_t			mouv_pts(char *res, int preciz, int16_t pts, int16_t *info);
-void			pf_exponent_move_and_round(t_prntf *p, int16_t *ex,
+void			pf_exponent_move_and_round(int *preciz, int16_t *ex,
 		t_tuple *info, char *res);
 void			buffer_exp(char *s, int ex, t_tuple info, int preciz);
 void			ft_sswap(char *a, char *b);
