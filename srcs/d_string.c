@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:25:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/26 15:25:57 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 20:32:52 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ t_tuple			d_string(t_dbuff buff, char **res)
 			}
 		ans.index = d_load_number(*res, &buff, i, ans.index);
 	}
-	*(*res + ans.index) = 0;
+	*(*res + ans.index) = 0x30;
 	return (ans);
 }
