@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcc <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/29 11:03:19 by gcc               #+#    #+#             */
-/*   Updated: 2021/01/27 01:15:39 by abaudot          ###   ########.fr       */
+/*   Created: 2021/01/28 22:55:44 by abaudot           #+#    #+#             */
+/*   Updated: 2021/01/28 22:55:48 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define LOMAGIC	0x0101010101010101L
 # define PC			0x2525252525252525L
 # define Z 			0x0000000000000000L
-# define BUFF_SZ	64
+# define BUFF_SZ	512
 # define FLAGS_LST	"#-+ 0*"
 # define HEX_U		"0123456789ABCDEF"
 # define HEX_L		"0123456789abcdef"
@@ -47,7 +47,6 @@
 # define UPPER		0x400
 # define SHORT		0x800
 # define ISNEG		0x1000
-# define POINTER	0x2000
 
 /*
 ** macros
