@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:47:45 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 21:09:10 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 21:14:45 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void		exponent_type(t_prntf *p, char *res, t_tuple n_info, int16_t ex)
 	{
 		while (*(res + tmp + n_info.index) == '0')
 			--n_info.index;
-		if (*(res + tmp + n_info.index) == '.')
+		if (*(res + tmp + n_info.index) == '.' && n_info.index)
 			--n_info.index;
 		if (p->preciz > 0)
 			p->preciz = 0;

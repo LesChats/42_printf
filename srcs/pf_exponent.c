@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 19:59:45 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/28 21:49:41 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		ft_atoiexpon(int16_t ex)
 	else if (ex < 0)
 	{
 		ex = -ex;
-		if (ex > -10)
+		if (ex < 10)
 			buffer("e-0", 3, 0);
 		else
 			buffer("e-", 2, 0);
@@ -116,7 +116,6 @@ void		pf_exponent_move_and_round(int *preciz, int16_t *ex,
 			*(res + 1) = '0';
 			*res = '.';
 			*ex += 1;
-			info->index -= 1;
 		}
 	}
 }
