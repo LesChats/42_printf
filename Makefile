@@ -6,7 +6,7 @@
 #    By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 17:05:44 by abaudot           #+#    #+#              #
-#    Updated: 2021/01/29 02:45:13 by abaudot          ###   ########.fr        #
+#    Updated: 2021/01/29 02:57:54 by abaudot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ LIBFT = libft
 NAME	=	libftprintf.a
 
 DIR_S = srcs
+
+BON_S = srcs_bonus
 
 DIR_O = obj
 
@@ -34,43 +36,42 @@ SOURCES = ft_printf.c \
 	  pf_char.c       \
 	  pf_notfound.c
 
-BONUS_SRC = pf_floats.c		\
-	  d_libft.c				 \
-	  d_buff.c  			  \
-	  d_utils.c  			   \
-	  d_string.c				\
-	  pf_exponent.c				 \
-	  pf_dtoa.c					  \
-	  g_printer.c	    		   \
-	  d_round.c       				\
+BONUS_SRC = pf_floats.c	\
+	  d_libft.c			 \
+	  d_buff.c  		  \
+	  d_utils.c  		   \
+	  d_string.c		    \
+	  pf_exponent.c			 \
+	  pf_dtoa.c				  \
+	  g_printer.c	    	   \
+	  d_round.c       		    \
 	  pf_gishard.c
 
 
-SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
-
-OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
-
+SRCS 	= $(addprefix $(DIR_S)/,$(SOURCES))
+BO_S 	= $(addprefix $(BON_S)/,$(BONUS_SRC))
+OBJS 	= $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
+B_OB 	= $(addprefix $(DIR_O)/,$(BONUS_SRC:.c=.o))
 
 all: $(NAME)
 
 bonus : all
 
-$(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+$(NAME): $(OBJS) $(B_OB)
+	ar rcs $(NAME) $(OBJS) $(B_OB)
 
 $(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)
 	@mkdir -p obj
 	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
-
-test:
-	@make all misc/main.c
+$(DIR_O)/%.o: $(BON_S)/%.c $(HEADER)
+	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
 
 norme:
-	norminette ./libft/
-	@echo
 	norminette ./$(HEADER)/
 	@echo
 	norminette ./$(DIR_S)/
+	@echo
+	norminette ./$(BON_S)/
 
 clean:
 	@rm -f $(OBJS)
