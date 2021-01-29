@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 14:59:04 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 20:03:41 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/29 04:04:01 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static void	print(t_prntf *p, char *res, t_tuple inf)
 	if (p->preciz == -1)
 		buffer("1", 1, 0);
 	buffer(res, inf.pts + inf.index + (inf.pts && inf.index), 0);
+	free(res);
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
-	free(res);
 	if (p->preciz > 0)
 	{
 		if (!inf.pts)
@@ -53,12 +53,12 @@ static void	print_minus(t_prntf *p, char *res, t_tuple info)
 	if (p->preciz == -1)
 		buffer("1", 1, 0);
 	buffer(res, l, 0);
+	free(res);
 	if (p->flags & HASH)
 	{
 		buffer(".", 1, 0);
 		--p->width;
 	}
-	free(res);
 	if (p->preciz > 0)
 	{
 		if (!info.pts)

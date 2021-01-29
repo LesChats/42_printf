@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 21:07:14 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 20:04:22 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/29 04:03:15 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	printge(t_prntf *p, char *res, int16_t expon, t_tuple in)
 	if (p->preciz == -1 && in.pts)
 		buffer("1", 1, 0);
 	buffer_exp(res, expon, in, p->preciz);
+	free(res);
 	if (p->flags & HASH && p->flags & PRECIZ)
 		buffer(".", 1, 0);
-	free(res);
 	if (p->preciz > 0 && p->flags & HASH)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
@@ -58,9 +58,9 @@ void	print_minusge(t_prntf *p, char *res, int16_t expon, t_tuple in)
 	else if (in.pts && in.index)
 		++p->width;
 	buffer_exp(res, expon, in, p->preciz);
+	free(res);
 	if (p->flags & HASH && p->flags & PRECIZ)
 		buffer(".", 1, 0);
-	free(res);
 	if (p->preciz > 0 && p->flags & HASH)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
@@ -86,9 +86,9 @@ void	printgf(t_prntf *p, char *res, t_tuple inf)
 	if (p->preciz == -1)
 		buffer("1", 1, 0);
 	buffer(res, inf.pts + inf.index + (inf.pts && inf.index), 0);
+	free(res);
 	if (p->flags & HASH && p->flags & PRECIZ)
 		buffer(".", 1, 0);
-	free(res);
 	if (p->preciz > 0 && p->flags & HASH)
 	{
 		if (!inf.pts)
@@ -110,12 +110,12 @@ void	print_minusgf(t_prntf *p, char *res, t_tuple in)
 	if (p->preciz == -1)
 		buffer("1", 1, 0);
 	buffer(res, l, 0);
+	free(res);
 	if (p->flags & HASH && p->flags & PRECIZ)
 	{
 		buffer(".", 1, 0);
 		--p->width;
 	}
-	free(res);
 	if (p->preciz > 0 && p->flags & HASH)
 	{
 		if (!in.pts)

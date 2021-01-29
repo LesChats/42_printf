@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 11:50:27 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 21:49:41 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/29 04:01:14 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static void	print(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	if (p->preciz == -1 && info.pts)
 		buffer("1", 1, 0);
 	buffer_exp(res, expon, info, p->preciz);
+	free(res);
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
-	free(res);
 	if (p->preciz > 0)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
@@ -82,9 +82,9 @@ static void	print_minus(t_prntf *p, char *res, int16_t expon, t_tuple info)
 	else if (info.pts && info.index)
 		++p->width;
 	buffer_exp(res, expon, info, p->preciz);
+	free(res);
 	if (p->flags & HASH)
 		buffer(".", 1, 0);
-	free(res);
 	if (p->preciz > 0)
 		fill_space("0000000000", p->preciz);
 	ft_atoiexpon(expon);
