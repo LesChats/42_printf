@@ -6,7 +6,7 @@
 #    By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 17:05:44 by abaudot           #+#    #+#              #
-#    Updated: 2021/01/29 02:36:10 by abaudot          ###   ########.fr        #
+#    Updated: 2021/01/29 02:45:13 by abaudot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,17 +32,19 @@ SOURCES = ft_printf.c \
 	  pf_unsigned.c \
 	  pf_string.c    \
 	  pf_char.c       \
-	  pf_notfound.c    \
-	  pf_floats.c       \
-	  d_libft.c\
-	  d_buff.c  \
-	  d_utils.c  \
-	  d_string.c  \
-	  pf_exponent.c\
-	  pf_dtoa.c		\
-	  g_printer.c	 \
-	  d_round.c       \
-	  pf_gishard.c	 
+	  pf_notfound.c
+
+BONUS_SRC = pf_floats.c		\
+	  d_libft.c				 \
+	  d_buff.c  			  \
+	  d_utils.c  			   \
+	  d_string.c				\
+	  pf_exponent.c				 \
+	  pf_dtoa.c					  \
+	  g_printer.c	    		   \
+	  d_round.c       				\
+	  pf_gishard.c
+
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
