@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:11:08 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 22:21:55 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/29 02:33:07 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,24 @@ void	nill_nan(char *ans, int len, size_t flags)
 	len -= 3;
 	if (flags & MINUS)
 	{
-		if (flags & ISNEG)
+		if (flags & ISNEG && *ans == 'i')
 			buffer("-", 1, 0);
+		else if (flags & PLUS && *ans == 'i')
+			buffer("+", 1, 0);
+		else if (flags & SPACE && *ans == 'i')
+			buffer(" ", 1, 0);
 		buffer(ans, 3, 0);
 		fill_space("          ", len);
 	}
 	else
 	{
 		fill_space("          ", len);
-		if (flags & ISNEG)
+		if (flags & ISNEG && *ans == 'i')
 			buffer("-", 1, 0);
+		else if (flags & PLUS && *ans == 'i')
+			buffer("+", 1, 0);
+		else if (flags & SPACE && *ans == 'i')
+			buffer(" ", 1, 0);
 		buffer(ans, 3, 0);
 	}
 	free(ans);

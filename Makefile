@@ -6,7 +6,7 @@
 #    By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 17:05:44 by abaudot           #+#    #+#              #
-#    Updated: 2021/01/28 13:28:15 by abaudot          ###   ########.fr        #
+#    Updated: 2021/01/29 02:36:10 by abaudot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ FLAGS = -Wall -Wextra -Werror -O2 -fPIC
 LIBFT = libft
 
 NAME	=	libftprintf.a
+
 DIR_S = srcs
 
 DIR_O = obj
@@ -24,19 +25,19 @@ DIR_O = obj
 HEADER = includes
 
 SOURCES = ft_printf.c \
-	  libft.c \
+	  libft.c   \
 	  pf_utils.c \
 	  pf_parser.c \
-	  pf_signed.c \
+	  pf_signed.c  \
 	  pf_unsigned.c \
-	  pf_string.c \
-	  pf_char.c \
-	  pf_notfound.c \
-	  pf_floats.c \
-	  d_libft.c \
-	  d_buff.c \
-	  d_utils.c \
-	  d_string.c\
+	  pf_string.c    \
+	  pf_char.c       \
+	  pf_notfound.c    \
+	  pf_floats.c       \
+	  d_libft.c\
+	  d_buff.c  \
+	  d_utils.c  \
+	  d_string.c  \
 	  pf_exponent.c\
 	  pf_dtoa.c		\
 	  g_printer.c	 \
