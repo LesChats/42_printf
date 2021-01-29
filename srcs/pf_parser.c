@@ -6,7 +6,7 @@
 /*   By: abaudot <abaudot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 22:56:23 by abaudot           #+#    #+#             */
-/*   Updated: 2021/01/28 22:56:25 by abaudot          ###   ########.fr       */
+/*   Updated: 2021/01/29 03:24:59 by abaudot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,7 @@ void					parse(t_prntf *p)
 	p->preciz = 0;
 	parse_flags_width(p);
 	parse_preciz_type(p);
+	if (!(p->flags & PRECIZ))
+		p->preciz = 0;
 	parse_type(p);
 }
